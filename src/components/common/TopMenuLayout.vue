@@ -1,0 +1,10 @@
+<template>
+<div>
+    <
+      <div>
+     <TopNav></TopNav>
+    <div>
+      <router-view></router-view>
+    </div>
+  </div>
+</template>
