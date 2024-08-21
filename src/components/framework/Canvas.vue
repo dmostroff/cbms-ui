@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <!-- <AppTopBar></AppTopBar> -->
+      <AppTopBar></AppTopBar>
       <img
         alt="CBMS"
         class="logo"
@@ -19,14 +19,11 @@
     </header>
 
     <RouterView />
-    <p>Nation {{ count }}</p>
-    <v-btn @click="click">counter</v-btn>
+    <footer><AppFooter/></footer>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-//import AppTopBar from './AppTopBar.vue'
-
-const count = ref(0)
-const click = () => count.value++
+import AppTopBar from '@/components/framework/AppTopBar.vue'
+import AppFooter from '@/components/framework/AppFooter.vue'
 </script>

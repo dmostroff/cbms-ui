@@ -1,15 +1,28 @@
 <template>
-  <q-toolbar class="justify-end items-center">
-    <q-toolbar-title class="absolute-center text-black">
+  <v-toolbar class="justify-end items-center">
+    <v-toolbar-title class="sm absolute-center text-black" align-end size="">
       {{ copyright }}
-    </q-toolbar-title>
-    <div>{{ progMode }}</div>
-  </q-toolbar>
+    </v-toolbar-title>
+    <v-toolbar-items class="xs">
+      <v-btn v-for="(item, index) in items" :key="index"  @click="clickitem(item.name)">
+        {{ item.label }}
+        </v-btn>
+      </v-toolbar-items>
+      <span size="small">{{  progMode }}</span>
+  </v-toolbar>
+
 </template>
 
-<script setup>
+<script setup lang="ts">
+import router from "@/router"
+import frameworkService from "@/services/FrameworkService"
 const progMode = import.meta.env.MODE;
 const copyright = "\u00A9 Ostroff Enterprises " + new Date().getFullYear();
+const items = frameworkService.menuItem
+
+const clickitem = (name: string) => {
+  router.push( { name: name })
+}
 </script>
 
 <style>

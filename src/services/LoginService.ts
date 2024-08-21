@@ -4,7 +4,12 @@ import userLoginStore from '@/stores/UserLoginStore'
 import apiService from '@/services/ApiService'
 import ApiError from '@/models/common/ApiError'
 
-const myUserLoginStore = userLoginStore()
+let myUserLoginStore = null
+try {
+  myUserLoginStore = userLoginStore()
+} catch( error) {
+  console.error(error)
+}
 const storeUserName = (username: string) => localStorage.setItem('username', username)
 const AUTH_TOKEN_NAME = apiService.getAuthTokenName()
 
