@@ -15,7 +15,7 @@
         </div>
         <div>
           <v-data-table
-            v-model="selectedRow"
+            item-value="selectedRow"
             :title="title"
             :items="clients"
             :headers="columns"
@@ -24,7 +24,6 @@
             row-key="id"
             :loading="isLoading"
             separator="vertical"
-            :pagination="pagination"
           >
             <!-- @row-click="rowclick" -->
             <template v-slot:top>
@@ -66,6 +65,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+import type Client from '@/interfaces/clients/Client'
 import ccd from '@/stores/ClientComponentData'
 import clientService from '@/services/clients/ClientService'
 import admService from '@/services/AdmService'
@@ -76,20 +76,23 @@ const counter = ref(0)
 const filter = ref(clientService.getClientsFilter())
 const upcount = () => counter.value++
 const isLoading = ref(false)
-const clients = ref({})
+const clients = ref([] as Client[])
 const columns = ccd.clientComponentData.clients.columns
 const filterClientStatus = ref('ACTIVE')
-const clientStatuses = ref({})
+const clientStatuses = ref([])
 const hasLoadedSettings = computed(() => admService.hasLoadedSettings())
 const errorMessage = ref('')
+const selectedRow = ref(0)
+const title = "Clients"
 
 const getClientList = async () => {
   isLoading.value = true
   let response = null
   try {
-    response = await clientService.getClients()
+    response = await clientService.getClients() as Client[]
     clients.value = response
     console.log(clients.value)
+    console.log( columns)
     isLoading.value = false
   } catch (error) {
     console.error(error)
@@ -125,6 +128,9 @@ const filterFunc = (rows, term) => {
   return filterTableRows(rows, term)
 }
 
+const addClient = ( row) => {
+  alert(row)
+}
 getClientList()
 getClientStatuses()
 </script>

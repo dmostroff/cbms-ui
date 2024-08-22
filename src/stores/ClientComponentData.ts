@@ -8,7 +8,7 @@ const clientComponentData = {
         key: 'id',
         title: 'id',
         sortable: true,
-        classes: 'id-column'
+        // classes: 'id-column'
       },
       {
         id: 2,
@@ -533,15 +533,15 @@ const getChildRoute = (section) => getSectionMember(section, 'childRoute')
 const getTableColumns = (section) => getSectionMember(section, 'columns')
 
 const ccd = {
-  getClientComponentData,
-  getRouteName,
-  getPostUrl,
-  getDeleteUrl,
-  getTitle,
-  getChildRoute,
-  getTableColumns,
-  clientComponentData,
-  clientLeftNavItems
+  getClientComponentData : getClientComponentData,
+  getRouteName : getRouteName,
+  getPostUrl : getPostUrl,
+  getDeleteUrl : getDeleteUrl,
+  getTitle : getTitle,
+  getChildRoute : getChildRoute,
+  getTableColumns : getTableColumns,
+  clientComponentData : clientComponentData,
+  clientLeftNavItems : clientLeftNavItems
 }
 
 export default ccd

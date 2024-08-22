@@ -1,14 +1,19 @@
 import { defineStore } from "pinia";
 
-export const apiStore = defineStore("apiStore", {
+import { AxiosError, AxiosResponse } from "axios";
+import ApiError from "../models/common/ApiError";
+
+const apiStore = defineStore("apiStore", {
   state: () => ({
-    url: null,
-    status: 0,
-    rc: 0,
-    message: null,
-    data: null,
-    error: null,
-    isError: false,
+    url: '' as string | undefined,
+    status: 0 as number,
+    rc: 0 as number,
+    message: undefined as string | undefined,
+    data: null as object | null | unknown,
+    error: {} as typeof AxiosError,
+    isError: false as boolean,
+    msg: "" as string,
+    apiError: undefined as typeof ApiError | undefined
   }),
   getters: {
     Url: (state) => state.url,
@@ -17,8 +22,9 @@ export const apiStore = defineStore("apiStore", {
     Message: (state) => state.message,
     Data: (state) => state.data,
     Error: (state) => state.error,
-    ErrorMessage: (state) => (state.error ? state.error.message : null),
+    ErrorMessage: (state) => (state.error ? state.error.toString() : undefined),
     IsError: (state) => state.isError,
+    TheApiError: (state) => state.apiError,
     IsNoToken: (state) => state.rc == 0 && state.message == "No token",
     ReturnResponse: (state) => {
       return {
@@ -31,7 +37,7 @@ export const apiStore = defineStore("apiStore", {
     },
   },
   actions: {
-    setResponse(response) {
+    setResponse(response: AxiosResponse) {
       // console.log( response);
       this.url = response.config.url;
       this.status = response.status;
@@ -59,13 +65,13 @@ export const apiStore = defineStore("apiStore", {
     clearError() {
       this.isError = false;
     },
-    setError(error) {
+    setError(error: typeof AxiosError) {
+      Object.assign( this.error, error)
       if (!error) {
         this.isError = false;
         return;
       }
       this.isError = true;
-      this.error = error;
       this.msg = "";
       this.data = null;
       this.rc = -1;
@@ -75,21 +81,25 @@ export const apiStore = defineStore("apiStore", {
           //   error && error.response && error.response.config
           //     ? error.response.config.url
           //     : "unknown";
-          this.status = error.response.status;
-          this.message = error.response.statusText;
+          this.message = error.toString();
           this.data =
-            error && "response" in error && "data" in error["response"]
+            error && "response" in error && "data" in error.response
               ? error.response.data
               : null;
-        } catch (err) {
+        } catch (err: any) {
           this.url = err;
           this.msg = "Error";
           this.data = err;
         }
       } else {
         console.log(error);
-        this.msg = error;
+        this.msg = error.toString();
       }
     },
+    setApiError(apiError: typeof ApiError) {
+      Object.assign( this.apiError, apiError)
+    }
   },
 });
+
+export default apiStore

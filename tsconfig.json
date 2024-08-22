@@ -5,9 +5,15 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "baseUrl": "./",
+    "target": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    // "lib": ["esnext", "dom"],
+    "baseUrl": ".",                  // Base directory for non-relative module names
     "paths": {
-      "@/*": ["src/*"]
-    }
-  }
+      "@/*": ["src/*"]               // Map @ to the src directory
+    },
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["node_modules"]
 }

@@ -24,9 +24,11 @@
   </v-toolbar>
 </template>
 <script setup lang="ts">
+/// <reference types="vite/client" />
 import { ref, watch, computed, onMounted, onUnmounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
+// @ts-ignore
 import TickingClock from '@/components/framework/TickingClock.vue'
 import loginService from '@/services/LoginService'
 
@@ -55,7 +57,8 @@ onUnmounted(() => {
   clearInterval(intervalID)
 })
 
-// const showLogin = computed(
+const showLogin = () => !loginService.isLoggedIn && ['login', 'logout'].indexOf(route.name as string) == -1
+// computed(
 //   () => !loginService.isLoggedIn && ['login', 'logout'].indexOf(route.name) == -1
 // )
 // const showLogout = computed(

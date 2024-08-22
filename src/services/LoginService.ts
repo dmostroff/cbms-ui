@@ -3,13 +3,17 @@ import type { LoginInfo, LoginResult } from '@/interfaces/common/LoginInfo'
 import userLoginStore from '@/stores/UserLoginStore'
 import apiService from '@/services/ApiService'
 import ApiError from '@/models/common/ApiError'
+import { getActivePinia } from 'pinia'
+import router from '../router'
 
-let myUserLoginStore = null
-try {
-  myUserLoginStore = userLoginStore()
-} catch( error) {
-  console.error(error)
+const defaultUserLoginStore = {
+  StartPage: '',
+  UserInfo: {},
+  UserLogin: {},
+  ErrorMsg: ''
 }
+let myUserLoginStore = getActivePinia() ? userLoginStore() : defaultUserLoginStore
+
 const storeUserName = (username: string) => localStorage.setItem('username', username)
 const AUTH_TOKEN_NAME = apiService.getAuthTokenName()
 
@@ -60,19 +64,24 @@ const storeUserInfo = (loginResult: LoginResult) => {
 }
 
 const login = async (loginInfo: LoginInfo): Promise<LoginResult> => {
+  myUserLoginStore = getActivePinia() ? userLoginStore() : defaultUserLoginStore
   // const userLogin = userLoginStore();
   clearAuthorizationToken()
   storeUserName(loginInfo.username)
   try {
-    const loginResult = (await apiService.post('onboard/login', loginInfo)) as LoginResult
+    const loginResult = await apiService.post('onboard/login', loginInfo) as LoginResult
+    console.log(loginResult)
     storeAuthorizationToken()
     storeUserInfo(loginResult)
+    console.log(myUserLoginStore, loginResult)
     myUserLoginStore.setUser(loginResult.user)
     myUserLoginStore.setUserLogin(loginResult.user_login)
+    router.push( { name: 'clients'})
     return loginResult
   } catch (error: any) {
-    console.log(error.msg)
-    return Promise.reject(new ApiError(error))
+    console.log(error)
+    const err = new ApiError(error)
+    return Promise.reject(err)
   }
 }
 

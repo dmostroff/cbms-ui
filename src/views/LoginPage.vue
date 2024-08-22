@@ -87,10 +87,9 @@ import { ref, reactive, defineEmits, computed } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import admService from '@/services/AdmService'
+import type { LoginResult } from '@/interfaces/common/LoginInfo'
 // import ccCardService from '@/service/ccCardService'
 import loginService from '@/services/LoginService'
-import type { LoginResult } from '@/interfaces/common/LoginInfo'
-
 const emit = defineEmits(['login', 'logout'])
 
 const router = useRouter()

@@ -36,7 +36,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  console.log('help')
   // ✅ This will work because the router starts its navigation after
   // the router is installed and pinia will be installed too
   const store = userLoginStore()
