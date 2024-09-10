@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 import { AxiosError, AxiosResponse } from "axios";
 import ApiError from "../models/common/ApiError";
+import type IApiError from '../interfaces/api/IApiError';
 
 const apiStore = defineStore("apiStore", {
   state: () => ({
@@ -10,10 +11,11 @@ const apiStore = defineStore("apiStore", {
     rc: 0 as number,
     message: undefined as string | undefined,
     data: null as object | null | unknown,
-    error: {} as typeof AxiosError,
     isError: false as boolean,
     msg: "" as string,
-    apiError: undefined as typeof ApiError | undefined
+    axiosError: undefined as typeof AxiosError | undefined,
+    apiError: undefined as IApiError | undefined | null,
+    error: undefined as any,
   }),
   getters: {
     Url: (state) => state.url,
@@ -21,10 +23,11 @@ const apiStore = defineStore("apiStore", {
     RC: (state) => state.rc,
     Message: (state) => state.message,
     Data: (state) => state.data,
-    Error: (state) => state.error,
     ErrorMessage: (state) => (state.error ? state.error.toString() : undefined),
-    IsError: (state) => state.isError,
+    IsError: (state) => ( (state.error || state.axiosError || state.apiError) ? true : false),
+    TheAxiosError: (state) => state.axiosError,
     TheApiError: (state) => state.apiError,
+    Error: (state) => state.error,
     IsNoToken: (state) => state.rc == 0 && state.message == "No token",
     ReturnResponse: (state) => {
       return {
@@ -65,41 +68,64 @@ const apiStore = defineStore("apiStore", {
     clearError() {
       this.isError = false;
     },
-    setError(error: typeof AxiosError) {
-      Object.assign( this.error, error)
-      if (!error) {
-        this.isError = false;
-        return;
-      }
-      this.isError = true;
-      this.msg = "";
-      this.data = null;
-      this.rc = -1;
-      if ("response" in error) {
-        try {
-          // this.url =
-          //   error && error.response && error.response.config
-          //     ? error.response.config.url
-          //     : "unknown";
-          this.message = error.toString();
-          this.data =
-            error && "response" in error && "data" in error.response
-              ? error.response.data
-              : null;
-        } catch (err: any) {
-          this.url = err;
-          this.msg = "Error";
-          this.data = err;
-        }
+    setAxiosError(error: typeof AxiosError | undefined) {
+      if( error && this.axiosError) {
+        Object.assign( this.axiosError as typeof AxiosError, error)
       } else {
-        console.log(error);
-        this.msg = error.toString();
+        this.axiosError = error
       }
+      console.log( error)
     },
-    setApiError(apiError: typeof ApiError) {
-      Object.assign( this.apiError, apiError)
+    setApiError(error: IApiError | undefined | null) {
+      if( error && this.apiError) {
+        Object.assign( this.apiError as typeof ApiError, error)
+      } else {
+        this.apiError = error
+      }
+      console.log( error)
+    },
+    setError(error: any) {
+      if( error && this.error) {
+        Object.assign( this.error, error)
+      } else {
+        this.error = error
+      }
+      console.log( error)
     }
+    // getError() {
+    //   (this.error ? )
+    // }
   },
 });
 
 export default apiStore
+
+
+      // if (!error) {
+      //   this.isError = false;
+      //   return;
+      // }
+      // this.isError = true;
+      // this.msg = "";
+      // this.data = null;
+      // this.rc = -1;
+      // if ("response" in error) {
+      //   try {
+      //     // this.url =
+      //     //   error && error.response && error.response.config
+      //     //     ? error.response.config.url
+      //     //     : "unknown";
+      //     this.message = error.toString();
+      //     this.data =
+      //       error && "response" in error && "data" in error.response
+      //         ? error.response.data
+      //         : null;
+      //   } catch (err: any) {
+      //     this.url = err;
+      //     this.msg = "Error";
+      //     this.data = err;
+      //   }
+      // } else {
+      //   console.log(error);
+      //   this.msg = error.toString();
+      // }

@@ -1,19 +1,23 @@
 {
-  "files": [],
+  // "files": [
+  //   "src/**/*.ts", "src/**/*.vue"
+  // ],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    // "lib": ["esnext", "dom"],
+    "lib": ["ES2020", "ES2020.Promise", "DOM", "DOM.Iterable"],
     "baseUrl": ".",                  // Base directory for non-relative module names
     "paths": {
-      "@/*": ["src/*"]               // Map @ to the src directory
+      "@/*": ["src/*"],               // Map @ to the src directory
+    // Recommended
     },
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    // See <https://github.com/vuejs/vue-cli/pull/5688>
+    "skipLibCheck": true,
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

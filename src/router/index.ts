@@ -28,9 +28,14 @@ const router = createRouter({
       component: () => import('@/views/ClientsPage.vue')
     },
     {
+      path: '/sysadmin',
+      name: 'sysadmin',
+      component: () => import( '@/components/admin/AdminHome.vue')
+    },
+    {
       path: '/network',
-      name: 'network_error',
-      component: () => import('../components/common/NetworkError.vue')
+      name: 'network-error',
+      component: () => import('@/components/common/NetworkError.vue')
     }
   ]
 })

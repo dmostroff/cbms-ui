@@ -15,8 +15,8 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { clientStore } from 'src/stores/clientStore'
-import { getAge } from '@/services/CommonService'
+import { clientStore } from '@/stores/clientStore'
+import { getAge } from '@/services/commonService'
 
 const myClientStore = clientStore()
 const clientPerson = myClientStore.ClientPerson

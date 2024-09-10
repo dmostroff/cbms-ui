@@ -28,13 +28,14 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import router from '@/router'
+// import { useRouter } from 'vue-router'
 // import type ApiError from '@/models/common/ApiError'
 // import misc from '@/services/MiscService'
 import type { ApiResult } from '@/interfaces/common/ApiResponse'
-import apiService from '@/services/ApiService'
+import apiService from '@/services/apiService'
 
-const router = useRouter()
+// const router = useRouter()
 // const name = 'NetworkError'
 const isPing = ref(false)
 let pingResponse = reactive({} as ApiResult)

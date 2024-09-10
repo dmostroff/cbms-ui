@@ -11,20 +11,20 @@
         >
       </v-card-actions>
     </v-card>
-    <v-container class="ma-lg">
+    <v-container class="ma-lg" color="red" background-color="red lighten-5">
       <v-row class="row justify-center" v-if="isLoading">
         <v-progress-linear :indeterminate="false" color="primary" size="3em" />
       </v-row>
       <v-row class="justify-center items-center">
-        <v-col cols="5">{{ isLoggedIn }}</v-col>
+        <v-col cols="5">Is Logged In: {{ isLoggedIn }}</v-col>
         <v-col cols="2">
           <v-img src="~/assets/creditcard.png" class="mx-2" style="width: 60%"></v-img>
         </v-col>
         <v-col><v-spacer /></v-col>
       </v-row>
-      <v-row v-if="message > ''" class="justify-center items-center text-warning">
-        {{ message }}
-      </v-row>
+      <v-row v-if="showMessage" class="justify-center items-center">
+        <v-col cols="12" class="text-warning">{{ message }}</v-col>
+        </v-row>
       <v-row class="justify-center">
         <v-col cols="6" class="justify-center items-center">
           <div class="text-h5 text-center text-bold q-pt-xl">Please Login</div>
@@ -32,8 +32,9 @@
             <v-text-field
               v-model="loginInfo.username"
               label="User Name"
-              style="background-color: aliceblue"
-              color="primary"
+              style="background-color: lightgray"
+              color="black"
+              background-color="secondary"
             ></v-text-field>
           </div>
           <div class="pa-sm">
@@ -43,7 +44,8 @@
               :type="isPwd ? 'password' : 'text'"
               hint="Password with toggle"
               @keydown.enter.prevent="login"
-              style="background-color: aliceblue"
+              style="background-color: gray"
+              color="secondary"
             >
               <template v-slot:append>
                 <v-icon
@@ -58,7 +60,7 @@
       </v-row>
       <v-row class="justify-center">
         <v-col cols="8" class="justify-center items-center">
-          <div v-if="errorLogin > ''" class="text-warning">
+          <div v-if="isErrorLogin" class="text-warning">
             {{ errorLogin }}
           </div>
         </v-col>
@@ -68,8 +70,8 @@
           <div class="pa-sm text-center">
             <v-btn
               label="Login"
+              color="primary"
               style="width: 120px"
-              class="bg-primary text-white q-pa-sm"
               @click="login"
               >Login</v-btn
             >
@@ -83,24 +85,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, defineEmits, computed } from 'vue'
+import { ref, reactive, computed } from "vue"
 import type { Ref } from 'vue'
+import router from "@/router"
 import { useRouter, useRoute } from 'vue-router'
-import admService from '@/services/AdmService'
+import admService from '@/services/admService'
 import type { LoginResult } from '@/interfaces/common/LoginInfo'
 // import ccCardService from '@/service/ccCardService'
-import loginService from '@/services/LoginService'
-const emit = defineEmits(['login', 'logout'])
+import loginService from '@/services/loginService'
 
-const router = useRouter()
+// const router = useRouter()
 const route = useRoute()
 const isPwd = ref(true)
 const isLoading = ref(false)
 const loginResult = ref({}) as Ref<LoginResult>
 const loginInfo = reactive(loginService.loginInfo)
-const isLoggedIn = computed(() => loginService.isLoggedIn)
+const isLoggedIn = computed(() => loginService.isLoggedIn())
 
 const errorLogin = ref('') as Ref<string>
+const isErrorLogin = computed(() =>  (errorLogin.value>'') ? true : false)
 const routeName = ref(route.name)
 const message = ref('')
 
@@ -119,22 +122,28 @@ const loginSetup = () => {
   }
 }
 
-loginSetup()
+const checkIsLoggedIn = (): Promise<boolean> => {
+  // return new <boolean>
+    return new Promise<boolean>((resolve, reject) => {
+      const isLoggedIn = loginService.isLoggedIn()
+      return isLoggedIn
+  });
+}
 
 const login = async (): Promise<boolean> => {
   isLoading.value = true
-  loginResult.value = (await loginService.login(loginInfo)) as LoginResult
-
+  const response = await loginService.login(loginInfo)
+  console.log( response)
   isLoading.value = false
   errorLogin.value = ''
-  if (loginService.isLoggedIn) {
+  if (loginService.isLoggedIn()) {
     // loadAdmSettingsAndCardData()
     gotoStartPage()
   } else {
-    errorLogin.value = loginService.ErrorMsg
+    message.value = loginResult.value.msg
+    errorLogin.value = loginService.getErrorMsg()
   }
-  // loginResult.value = JSON.stringify(loginService.UserInfo)
-  return loginService.isLoggedIn
+  return (loginResult.value) ? true : false
 }
 
 // const loadAdmSettingsAndCardData = async () => {
@@ -145,12 +154,16 @@ const login = async (): Promise<boolean> => {
 // }
 
 const gotoStartPage = () => {
-  const startPage = loginService.StartPage
+  const startPage = loginService.getStartPage()
   router.push({ name: startPage })
 }
 
+const showMessage = computed(() : boolean => (message.value > '') ? true : false)
 const pingResult = ref({})
 const ping = async () => {
   pingResult.value = await admService.ping()
 }
+
+loginSetup()
+
 </script>

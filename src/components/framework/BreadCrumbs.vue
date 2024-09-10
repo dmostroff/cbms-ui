@@ -53,8 +53,8 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { VBreadcrumbsItem } from 'vuetify/components'
-import clientStore from '@/stores/ClientStore'
-import ccd from '@/stores/ClientComponentData'
+import clientStore from '@/stores/clientStore'
+import ccd from '@/stores/clientComponentData'
 import type vuetify from '@/plugins/vuetify'
 
 const props = defineProps({

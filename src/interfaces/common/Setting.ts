@@ -1,5 +1,5 @@
 export default interface Setting {
-  id: number
+  id?: number | null
   key: string
   value: string
   // Add other setting properties here

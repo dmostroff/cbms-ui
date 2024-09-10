@@ -11,6 +11,7 @@ import axios, {
 // import type { apiResult } from '@/interfaces/apiResult'
 import type ApiResponse from '@/interfaces/common/ApiResponse'
 import ApiError from '@/models/common/ApiError'
+import apiStore from '../stores/apiStore'
 
 export const baseUrl = import.meta.env.VITE_API_BASE_URL
 // console.log(baseUrl, process.env.NODE_ENV, process.env.VUE_APP_TITLE, process.env.VUE_APP_VERSION, process.env.VUE_APP_MODE)
@@ -79,20 +80,24 @@ axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config
 })
 
-const axiosErrorHandler = (axiosError: AxiosError) => {
-  const errorFuncs = {
-    400: (axiosError: AxiosError) =>
-      console.log(axiosError.response ? axiosError.response.data : '400 error'),
-    401: (axiosError: AxiosError) => console.log('unauthorized'),
-    404: (axiosError: AxiosError) => console.log('not found'),
-    500: (axiosError: AxiosError) => console.log('server error'),
-    999: (axiosError: AxiosError) => defaultHandleAxiosError(axiosError)
-  }
-  const errorStatus = axiosError ? (axiosError.status ?? 999) : 999
-  ;(errorFuncs[errorStatus] ?? errorFuncs[999])(axiosError)
-  console.log(axiosError)
-  console.error(axiosError)
-  return Promise.reject(axiosError)
+const setAxiosErrorToStore = (error: typeof AxiosError) => {
+  apiStore().setAxiosError(error);
+}
+const axiosErrorHandler = (axiosError: typeof AxiosError) => {
+  // const errorFuncs = {
+  //   400: (axiosError: AxiosError) =>
+  //     console.log(axiosError.response ? axiosError.response.data : '400 error'),
+  //   401: (axiosError: AxiosError) => console.log('unauthorized'),
+  //   404: (axiosError: AxiosError) => console.log('not found'),
+  //   500: (axiosError: AxiosError) => console.log('server error'),
+  //   999: (axiosError: AxiosError) => defaultHandleAxiosError(axiosError)
+  // }
+  // const errorStatus = axiosError ? (axiosError.status ?? 999) : 999
+  // ;(errorFuncs[errorStatus] ?? errorFuncs[999])(axiosError)
+  // console.log(axiosError)
+  // console.error(axiosError)
+  setAxiosErrorToStore(axiosError)
+  // return Promise.reject(axiosError)
 }
 
 axios.interceptors.response.use(
@@ -116,6 +121,7 @@ const httpGet = async (url: string): Promise<ApiResponse<T>> => {
     //   return response.data
     // }
   } catch (error: any) {
+    console.log( error)
     return axiosErrorHandler(error as AxiosError)
   }
 }

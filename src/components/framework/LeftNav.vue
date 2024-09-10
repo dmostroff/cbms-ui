@@ -22,7 +22,7 @@
 </template>
 <script setup>
 import { watch, computed } from 'vue'
-import { userLoginStore } from '@/stores/UserLoginStore'
+import { userLoginStore } from '@/stores/userLoginStore'
 const emits = defineEmits(['leftnavclick'])
 const userLogin = userLoginStore()
 let isLoggedIn = userLogin.IsLoggedIn

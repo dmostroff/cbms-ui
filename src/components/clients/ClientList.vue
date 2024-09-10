@@ -41,9 +41,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import ccd from '@/stores/ClientComponentData'
+import ccd from '@/stores/clientComponentData'
 import clientService from '@/services/clients/ClientService'
-import clientStore from '@/stores/ClientStore'
+import clientStore from '@/stores/clientStore'
 
 const emit = defineEmits(['editItem', 'addItem', 'deleteItem'])
 const myClientStore = clientStore()

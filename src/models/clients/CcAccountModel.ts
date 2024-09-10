@@ -1,11 +1,38 @@
-import ClientDataModel from 'src/models/clients/ClientDataModel'
+import type CcAccount from "@/interfaces/clients/CcAccount"
+import type ClientPerson from '@/interfaces/clients/ClientPerson'
+import ClientDataModel from '@/models/clients/ClientDataModel'
 import { formatDate } from '@/services/CommonService'
 
-export class CcAccountModel extends ClientDataModel {
+export class CcAccountModel extends ClientDataModel implements CcAccount {
+  xero_id: string | null
+  client_code: string | null
+  first_name: string | null
+  last_name: string | null
+  client_name: string | null
+  card_name: string | null
+  card_status: string | null
+  device: string | null
+  open_date: string | null
+  cc_login: string | null
+  cc_pwd: string | null
+  card_number: string | null
+  card_exp: string | null
+  card_cvv: string | null
+  card_pin: string | null
+  reconciled_on: string | null
+  charged_on: string | null
+  credit_line: string | null
+  due_on: string | null
+  bonus_to_spend: string | null
+  bonus_spend_by: string | null
+  bonus_spent: string | null
+  ccaccount_info: string | null
+  task: string | null
+  in_charge: string | null
+  notes: string | null
+
   constructor(indata = null) {
     super(null)
-    this.id = null
-    this.client_id = null
     this.xero_id = null
     this.client_code = null
     this.first_name = null
@@ -32,20 +59,19 @@ export class CcAccountModel extends ClientDataModel {
     this.task = null
     this.in_charge = null
     this.notes = null
-    this.recorded_on = null
     if (indata) {
       Object.assign(this, indata)
     }
   }
 
-  init(clientPerson) {
+  init(clientPerson: ClientPerson) {
     super.init(clientPerson)
     this.first_name = clientPerson.first_name
     this.last_name = clientPerson.last_name
     this.client_name = clientPerson.last_name + ', ' + clientPerson.first_name
   }
 
-  setCardXeroId(card_code) {
+  setCardXeroId(card_code: string) {
     this.xero_id = card_code + '-' + this.client_code
   }
 
@@ -53,7 +79,7 @@ export class CcAccountModel extends ClientDataModel {
     return CcAccountModel.sanitizeData(this)
   }
 
-  static sanitizeData = (item) => {
+  static sanitizeData = (item: CcAccount) => {
     ;['open_date', 'reconciled_on', 'charged_on', 'due_on'].forEach(
       (member) => (item[member] = formatDate(item[member]))
     )

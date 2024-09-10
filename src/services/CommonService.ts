@@ -325,4 +325,4 @@ export const getSettingDescription = (settings: Setting[], keyname: string): str
 // };
 
 export default { sleep, getFormData, clone, upsert }
-export * as cs from './CommonService'
+export * as cs from './commonService'

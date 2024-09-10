@@ -66,10 +66,10 @@ import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type Client from '@/interfaces/clients/Client'
-import ccd from '@/stores/ClientComponentData'
+import ccd from '@/stores/clientComponentData'
 import clientService from '@/services/clients/ClientService'
-import admService from '@/services/AdmService'
-import { filterTableRows } from '@/services/CommonService'
+import admService from '@/services/admService'
+import { filterTableRows } from '@/services/commonService'
 
 const router = useRouter()
 const counter = ref(0)

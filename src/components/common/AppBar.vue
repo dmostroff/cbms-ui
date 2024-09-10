@@ -23,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import loginService from '@/services/LoginService';
+import loginService from '@/services/loginService';
 
 const initLoggedIn = false
 const title = process.env.VUE_APP_TITLE

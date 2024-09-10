@@ -132,6 +132,9 @@ const admStore = defineStore('admStore', {
     Settings: (state) => state.admSettings,
     SettingsByPrefix: (state) => {
       return (prefix: string) => {
+        if( !state.admSetting) {
+          return state.admSetting
+        }
         return state.admSettings.length > 0
           ? state.admSettings.filter((item: AdmSetting) => item.prefix === prefix)
           : state.admSettings
