@@ -4,33 +4,29 @@ const clientComponentData = {
     columns: [
       {
         id: 1,
-        value: 'id',
         key: 'id',
-        title: 'id',
+        title: 'Id',
         sortable: true,
         // classes: 'id-column'
       },
       {
         id: 2,
-        value: 'client_code',
         key: 'client_code',
         title: 'Code',
         sortable: true
       },
       {
         id: 3,
-        value: 'last_name',
         key: 'last_name',
         title: 'Last Name',
-        align: 'left',
+        align: 'start',
         sortable: true
       },
       {
         id: 4,
-        value: 'first_name',
         key: 'first_name',
         title: 'First Name',
-        align: 'left',
+        align: 'start',
         sortable: true
       },
       // { id: 5, value: "middle_name", key: "middle_name", title: "Mnamedle Name" },
@@ -38,43 +34,47 @@ const clientComponentData = {
         id: 6,
         key: 'dob',
         title: 'DoB',
-        style: 'width: 20px; color: #0000FF',
+        // style: 'width: 20px; color: #0000FF',
         align: 'center',
-        format: (value: string, row: any) => {
-          try {
-            const dt = new Date(value)
-            return `${dt.getMonth() + 1}/${dt.getDate()}/${dt.getFullYear()}`
-          } catch (error) {
-            return value
-          }
-        }
+        // format: (value: string, row: any) => {
+        //   try {
+        //     const dt = new Date(value)
+        //     return `${dt.getMonth() + 1}/${dt.getDate()}/${dt.getFullYear()}`
+        //   } catch (error) {
+        //     return value
+        //   }
+        // }
       },
       // { id: 7, value: "gender", key: "gender", title: "Gender" },
       // { id: 8, value: "ssn", key: "ssn", title: "Ssn" },
       // { id: 9, value: "mmn", key: "mmn", title: "Mmn" },
-      { id: 10, key: 'email', title: 'Email', align: 'left' },
+      { 
+        id: 10,
+        key: 'email', 
+        title: 'Email', 
+        align: 'start'
+      },
       // { id: 11, value: "pwd", key: "pwd", title: "Pwd" },
       // { id: 12, value: "phone", key: "phone", title: "Phone" },
       // { id: 13, value: "income", key: "income", title: "Income" },
       // { id: 14, value: "phone_cell", key: "phone_cell", title: "Phone Cell" },
       // { id: 15, value: "phone_official", key: "phone_official", title: "Phone Official" },
-      // { id: 16, key: "client_status", title: "Status" },
-      {
-        id: 16,
-        key: 'client_status_desc',
-        title: 'Status',
-        style: 'width: 68px;',
-        align: 'center'
-      },
+      { id: 16, key: "client_status", title: "Status" },
+      // {
+      //   id: 16,
+      //   key: 'client_status_desc',
+      //   title: 'Status',
+      //   style: 'width: 68px;',
+      //   align: 'center'
+      // },
       // { id: 17, value: "client_info", key: "client_info", title: "Client Info" },
       // { id: 18, value: "recorded_on", key: "recorded_on", title: "Recorded On" },
-      {
-        id: 30,
-        value: 'actions',
-        title: 'Actions',
-        key: '',
-        align: 'center'
-      }
+      // {
+      //   id: 30,
+      //   key: '_actions_',
+      //   title: 'Actions',
+      //   align: 'center'
+      // }
     ],
     getUrl: 'clients',
     postUrl: 'clients/0',

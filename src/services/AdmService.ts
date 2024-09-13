@@ -45,6 +45,11 @@ const deleteSetting = async (id: number) => {
   myAdmStore.deleteAdmSetting(id)
 }
 
+const getKeyValue = ( keyname: string, adm_settings: AdmSetting[]): string => {
+  const found = adm_settings.find((item: AdmSetting) => item.keyname == keyname)
+  return ( found) ? found.keyvalue : keyname
+}
+
 const admService = {
   ping: ping,
   getUsers: getUsers,
@@ -58,7 +63,8 @@ const admService = {
   hasLoadedSettings: () => myAdmStore.HasSettings,
   getSettingsByPrefix: (prefix: string) => myAdmStore.getSettingsByPrefix(prefix),
   PrefixSettingOptions: myAdmStore.PrefixSettingOptions,
-  PrefixSettingOptionsWithBlank: myAdmStore.PrefixSettingOptionsWithBlank
+  PrefixSettingOptionsWithBlank: myAdmStore.PrefixSettingOptionsWithBlank,
+  getKeyValue: getKeyValue
 }
 
 export default admService

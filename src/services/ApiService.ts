@@ -34,15 +34,13 @@ const getError = (): any => {
 const apiService = {
   get: async <T>(url: string): Promise<T> => {
     try {
-      const response = await api.get(url)
+      const response = await api.get(url) as ApiResult
       console.log( response, typeof response)
-
-      // if (response && 'rc' in response && response.rc == 1) {
-      //   return response.data as T
-      // } else {
-      //   throw new ApiError(response)
-      // }
-      return response
+      if (response && 'rc' in response && response.rc == 1) {
+        return response.data as T
+      } else {
+        throw new ApiError(response)
+      }
     } catch (error: any) {
       console.error(error)
       setApiError( error)

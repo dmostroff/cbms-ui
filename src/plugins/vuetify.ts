@@ -42,7 +42,7 @@ const vuetifyConfig: VuetifyOptions = {
     }
   },
   theme: {
-    defaultTheme: 'dark'
+    defaultTheme: 'light'
   }
 }
 // Global configuration

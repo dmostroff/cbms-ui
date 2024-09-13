@@ -8,15 +8,21 @@
   ],
   "compilerOptions": {
     "lib": ["ES2020", "ES2020.Promise", "DOM", "DOM.Iterable"],
+    "target": "esnext",  // You can use es6, es2020, or any version that suits your needs
+    "module": "esnext",  // Set to "esnext" to allow import.meta
     "baseUrl": ".",                  // Base directory for non-relative module names
     "paths": {
+      "@": ["src"],
       "@/*": ["src/*"],               // Map @ to the src directory
     // Recommended
     },
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    // See <https://github.com/vuejs/vue-cli/pull/5688>
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+    // See <https://github.com/vuejs/vue-cli/pull/5688>
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "dist"]

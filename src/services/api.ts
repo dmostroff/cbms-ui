@@ -68,15 +68,17 @@ const defaultHandleAxiosError = (error: AxiosError) => {
 axios.defaults.baseURL = baseUrl
 // axios.defaults.headers.common['Authorization'] = 'Bearer'
 
-axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+axiosApi.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   config.headers.set('Content-Type', 'application/json; charset=utf-8')
-  // let auth_token = localStorage.getItem(AUTHORIZATION)
-  // if (!auth_token) {
-  //   auth_token = generateString(64)
-  // }
-  // if (auth_token) {
-  //   config.headers.set('Authorization', `Bearer ${auth_token}`)
-  // }
+  let auth_token = localStorage.getItem(AUTHORIZATION)
+  if (!auth_token) {
+    auth_token = generateString(64)
+  }
+  if (auth_token) {
+    config.headers.set('Authorization', `Bearer ${auth_token}`)
+    config.headers.set(AUTHORIZATION, auth_token)
+    console.log( config.headers)
+  }
   return config
 })
 
@@ -100,12 +102,16 @@ const axiosErrorHandler = (axiosError: typeof AxiosError) => {
   // return Promise.reject(axiosError)
 }
 
-axios.interceptors.response.use(
+axiosApi.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
-    header.AUTHORIZATION = response.headers[AUTHORIZATION]
+    if (AUTHORIZATION in response.headers) {
+      header.AUTHORIZATION = response.headers[AUTHORIZATION]
+      localStorage.setItem(AUTHORIZATION, header.AUTHORIZATION)
+    }
+    console.log(header.AUTHORIZATION)
     return response
   },
-  async (error: AxiosError) => {
+  async (error: typeof AxiosError) => {
     axiosErrorHandler(error)
     return Promise.reject(error)
   }
@@ -115,7 +121,7 @@ const responseBody = (response: AxiosResponse) => response.data
 
 const httpGet = async (url: string): Promise<ApiResponse<T>> => {
   try {
-    const response = await axiosApi.get<ApiResponse<T>>(url)
+    const response = await axiosApi.get<ApiResponse<T>>(url).then()
     return response.data
     // if (response.request.status == 200) {
     //   return response.data
