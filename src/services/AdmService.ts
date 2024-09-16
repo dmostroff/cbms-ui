@@ -1,5 +1,5 @@
 import { getActivePinia } from 'pinia'
-import apiService from './apiService'
+import apiService from '@/services/apiService'
 import type User from '@/interfaces/common/User'
 import type AdmUser from '@/interfaces/admin/AdmUser'
 import type AdmSetting from '@/interfaces/admin/AdmSetting'
@@ -8,7 +8,7 @@ import admStore from '@/stores/AdmStore'
 
 const myAdmStore = (getActivePinia()) ? admStore() : null;
 
-const ping = async (): Promise<any> => {
+const ping = async (): Ping => {
   return (await apiService.get('ping')) as Ping
 }
 const getUsers = async () => {

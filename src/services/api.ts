@@ -43,17 +43,18 @@ const generateString = (length: number) => {
   return result
 }
 
-const get_config = (httpmethod: string): AxiosRequestConfig => {
-  const tk = generateString(64)
-  const bearer_token = `Bearer ${tk}`
-  const auth_token = localStorage.getItem(AUTHORIZATION)
-  const config: AxiosRequestConfig = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  return config
-}
+// const get_config = (httpmethod: string): AxiosRequestConfig => {
+//   const tk = generateString(64)
+//   const bearer_token = `Bearer ${tk}`
+//   const auth_token = localStorage.getItem(AUTHORIZATION)
+//   if 
+//   const config: AxiosRequestConfig = {
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   }
+//   return config
+// }
 // Authorization: `Bearer ${bearer_token}`,
 // auctoritas: auth_token
 
@@ -128,18 +129,18 @@ const httpGet = async (url: string): Promise<ApiResponse<T>> => {
     // }
   } catch (error: any) {
     console.log( error)
-    return axiosErrorHandler(error as AxiosError)
+    return axiosErrorHandler(error as typeof AxiosError)
   }
 }
 
 const httpPost = async (url: string, body: {}): Promise<ApiResponse<T>> => {
   try {
     const full_url = `${baseUrl}/${url}`
-    const config = get_config('post')
-    const response = await axiosApi.post<ApiResponse<T>>(full_url, body, config)
+    // const config = get_config('post')
+    const response = await axiosApi.post<ApiResponse<T>>(full_url, body) // , config)
     return response.data
   } catch (error) {
-    return axiosErrorHandler(error as AxiosError)
+    return axiosErrorHandler(error as typeof AxiosError)
   }
 }
 
@@ -148,7 +149,7 @@ const httpDelete = async (url: string): Promise<ApiResponse<T>> => {
     const response = await axiosApi.delete<ApiResponse<T>>(url)
     return response.data
   } catch (error) {
-    return axiosErrorHandler(error as AxiosError)
+    return axiosErrorHandler(error as typeof AxiosError)
   }
 }
 

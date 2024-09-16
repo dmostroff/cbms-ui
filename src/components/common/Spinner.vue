@@ -6,14 +6,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BeatLoader'
-}
-</script>
 
 <script setup lang="ts">
-const props = defineProps({
+  // name: 'BeatLoader'
+  const props = defineProps({
   loading: {
     type: Boolean,
     default: true

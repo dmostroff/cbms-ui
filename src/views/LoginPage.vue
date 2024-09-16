@@ -1,16 +1,12 @@
 <template>
   <div>
-    <v-card class="ma-lg">
-      <v-card-title background-color="primary">Login</v-card-title>
-      <v-card-text>
-        {{ pingResult }}
-      </v-card-text>
-      <v-card-actions>
-        <v-btn label="Ping" style="width: 120px" class="bg-primary text-white q-pa-sm" @click="ping"
-          >Ping</v-btn
-        >
-      </v-card-actions>
-    </v-card>
+    <img
+        alt="CBMS"
+        class="logo"
+        src="@/assets/generic_credit_card.jpg"
+        width="125"
+        height="125"
+      />
     <v-container class="ma-lg" color="red" background-color="red lighten-5">
       <v-row class="row justify-center" v-if="isLoading">
         <v-progress-linear :indeterminate="false" color="primary" size="3em" />
@@ -111,7 +107,7 @@ const loginSetup = () => {
   // loginInfo = userLogin.LoginInfo;
   routeName.value = route.name
   if (route.name == 'logout') {
-    if (loginService.isLoggedIn) {
+    if (loginService.isLoggedIn()) {
       loginService.logout(loginInfo)
       message.value = 'Logged out.'
     } else {
@@ -155,6 +151,7 @@ const login = async (): Promise<boolean> => {
 
 const gotoStartPage = () => {
   const startPage = loginService.getStartPage()
+  console.log( 'gotoStartPage', startPage)
   router.push({ name: startPage })
 }
 

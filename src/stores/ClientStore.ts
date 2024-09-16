@@ -31,6 +31,7 @@ const clientStore = defineStore('clientStore', {
     itemIsValid: null as boolean | null
   }),
   getters: {
+    IsLoading: ( state: StateTree) => state.loading,
     Clients: (state: StateTree) => state.clients,
     ClientsFilter: (state: StateTree) => state.clientsFilter,
     ClientStatusFilter: (state: StateTree) => state.clientStatusFilter,
@@ -73,6 +74,12 @@ const clientStore = defineStore('clientStore', {
         .join('~')
   },
   actions: {
+    BeginLoading() {
+      this.loading = true
+    },
+    EndLoading() {
+      this.loading = false
+    },
     HasClients() {
       return this.clients && Array.isArray(this.clients) && this.clients.length > 0
     },

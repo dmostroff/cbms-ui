@@ -1,5 +1,17 @@
 export class AuthUserModel {
-  constructor(username, first_name, last_name) {
+  id: number | null
+  username: string
+  password: string | null
+  first_name: string
+  last_name: string
+  email: string | null
+  is_superuser: boolean
+  is_staff: boolean
+  is_active: boolean
+  password_hint: string | null
+  roles: any | null
+  created_at: Date | null
+constructor(username : string, first_name: string, last_name: string) {
     this.id = null;
     this.username = username;
     this.password = null;

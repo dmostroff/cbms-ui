@@ -9,7 +9,7 @@ const apiStore = defineStore("apiStore", {
     url: '' as string | undefined,
     status: 0 as number,
     rc: 0 as number,
-    message: undefined as string | undefined,
+    message: '' as string,
     data: null as object | null | unknown,
     isError: false as boolean,
     msg: "" as string,
@@ -83,6 +83,9 @@ const apiStore = defineStore("apiStore", {
         this.apiError = error
       }
       console.log( error)
+    },
+    setMessage(message: string) {
+      this.message = message
     },
     setError(error: any) {
       if( error && this.error) {

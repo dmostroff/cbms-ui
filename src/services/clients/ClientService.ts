@@ -1,4 +1,4 @@
-import ApiService from '@/services/ApiService'
+import apiService from '@/services/apiService'
 import type Client from '@/interfaces/clients/Client'
 import type { Clients } from '@/interfaces/clients/Client'
 import type ClientPerson from '@/interfaces/clients/ClientPerson'
@@ -72,41 +72,41 @@ const sectionUrls = {
 }
 
 const getClients = async (): Promise<Client[]> => {
-  const clients = (await ApiService.get('clients')) as Client[]
+  const clients = (await apiService.get('clients')) as Client[]
   myClientStore.setClients(clients)
   return clients
 }
 
 const getClient = async (client_id: number): Promise<Client> => {
   const url = sectionUrls.client.getUrl
-  const client = (await ApiService.get(`${url}/${client_id}`)) as Client
+  const client = (await apiService.get(`${url}/${client_id}`)) as Client
   myClientStore.setClient(client)
   return client
 }
 
 const postClient = async (client: Client): Promise<Client> => {
   const url = sectionUrls.client.postUrl
-  const new_client = (await ApiService.post(`${url}/${client.person.id}`, client)) as Client
+  const new_client = (await apiService.post(`${url}/${client.person.id}`, client)) as Client
   return new_client
 }
 
 const deleteClient = async (client_id: number): Promise<Client> => {
   const url = sectionUrls.client.deleteUrl
-  const client = (await ApiService.delete(`${url}/${client_id}`)) as Client
+  const client = (await apiService.delete(`${url}/${client_id}`)) as Client
   myClientStore.deleteClient(client_id)
   return client
 }
 
 const getClientPerson = async (client_id: number): Promise<ClientPerson> => {
   const url = sectionUrls.person.getUrl
-  const client = (await ApiService.get(`${url}/${client_id}`)) as Client
+  const client = (await apiService.get(`${url}/${client_id}`)) as Client
   myClientStore.setClientPerson(client.person)
   return client.person
 }
 
 const postClientPerson = async (clientPerson: ClientPerson): Promise<ClientPerson> => {
   const url = sectionUrls.person.postUrl
-  const newClientPerson = (await ApiService.post(
+  const newClientPerson = (await apiService.post(
     `${url}/${clientPerson.id}`,
     clientPerson
   )) as ClientPerson
@@ -116,25 +116,25 @@ const postClientPerson = async (clientPerson: ClientPerson): Promise<ClientPerso
 
 const deleteClientPerson = async (client_id: number): Promise<ClientPerson> => {
   const url = sectionUrls.person.deleteUrl
-  const response = (await ApiService.delete(`${url}/${client_id}`)) as ClientPerson
+  const response = (await apiService.delete(`${url}/${client_id}`)) as ClientPerson
   return response
 }
 
 const getItem = async (sectionName: string, item_id: number): Promise<ClientData> => {
   const url = sectionUrls[sectionName].getUrl
-  const response = (await ApiService.get(`${url}/${item_id}`)) as ClientData
+  const response = (await apiService.get(`${url}/${item_id}`)) as ClientData
   return response
 }
 
 const postItem = async <ClientData>(sectionName: string, item: ClientData): Promise<ClientData> => {
   const url = sectionUrls[sectionName].postUrl
-  const response = (await ApiService.post(`${url}/${item.id}`, item)) as ClientData
+  const response = (await apiService.post(`${url}/${item.id}`, item)) as ClientData
   return response
 }
 
 const deleteItem = async (sectionName: string, item_id: number): Promise<ClientData> => {
   const url = sectionUrls[sectionName].deleteUrl
-  const response = (await ApiService.delete(`${url}/${item_id}`)) as ClientData
+  const response = (await apiService.delete(`${url}/${item_id}`)) as ClientData
   return response
 }
 
@@ -151,7 +151,10 @@ const clientService = {
   deleteItem: deleteItem,
   getClientsFilter: () => myClientStore.ClientsFilter,
   setClientsFilter: (filter: string) => myClientStore.setClientsFilter(filter),
-  setClientStatusFilter: (status: string) => myClientStore.setClientStatusFilter(status)
+  setClientStatusFilter: (status: string) => myClientStore.setClientStatusFilter(status),
+  isLoading: myClientStore.isLoading,
+  beginLoading: () => myClientStore.BeginLoading(),
+  endLoading: () => myClientStore.EndLoading(),
 }
 
 export default clientService

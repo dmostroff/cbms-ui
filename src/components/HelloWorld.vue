@@ -10,7 +10,23 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
+    <img
+        alt="CBMS"
+        class="logo"
+        src="@/assets/generic_credit_card.jpg"
+        width="125"
+        height="125"
+      />
+      <p>{{ showError }}</p>
+      <p>{{  genError }} {{  apiError }} {{ axiosError}}</p>
+      <div class="wrapper">
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+          <RouterLink to="/clients">Clients</RouterLink>
+        </nav>
+      </div>
+  <button type="button" @click="count++">count is {{ count }}</button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR

@@ -9,8 +9,7 @@
           </v-row>
           <v-row>
             <v-col cols="4">
-              <v-text-field v-model="myAuthRole.role" label="Role">
-              </v-text-field>
+              <v-text-field v-model="myAuthRole.role" label="Role"> </v-text-field>
             </v-col> </v-row
           ><v-row>
             <v-col cols="8">
@@ -34,70 +33,60 @@
   </v-form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, reactive } from "vue";
 import commonService from "@/services/commonService";
-import authService from "@/services/authService";
-import EditSaveCancel from "@/components/common/EditSaveCancel";
+import authService from "@/services/authService"
+import EditSaveCancel from "@/components/common/EditSaveCancel.vue";
 // import AuthRoleModel from "@/models/admin/AuthRoleModel";
+import type AuthRole from "@/interfaces/admin/AuthRole";
 
-export default {
-  value: "AuthRoleForm",
-  components: {
-    EditSaveCancel,
+// value: "AuthRoleForm",
+const props = defineProps({
+  authRole: Object,
+  isReadOnly: {
+    type: Boolean,
+    default: false,
   },
-  props: {
-    authRole: Object,
-    isReadOnly: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      prevAuthRole: {},
-      myAuthRole: {},
-      readOnly: false,
-    };
-  },
-  computed: {},
-  mounted() {
-    this.prevAuthRole = commonService.clone(this.authRole);
-    this.myAuthRole = commonService.clone(this.authRole);
-    this.readOnly = this.isReadOnly;
-  },
-  methods: {
-    editForm() {
-      this.readOnly = false;
-    },
-    async saveForm() {
-      // console.log( 'form saveForm', this.myCcAccount);
-      let id = this.myAuthRole.id ? this.myAuthRole.id : 0;
-      let response = await authService.postAuthRole(id, this.myAuthRole);
-      let bret = commonService.emitSaveForm(this, response);
-      // console.log(bret, response);
-      if (!bret) {
-        this.msgBox.dialog = true;
-        this.msgBox.prompt = [
-          "Unable to save Role",
-          ` ${response.rc}] ${response.msg}`,
-        ];
-      }
-    },
-    cancelForm() {
-      this.readOnly = true;
-      let authRole = commonService.clone(this.prevAuthRole);
-      this.$emit("cancelForm", "AuthRoleForm", authRole);
-    },
-    closeForm() {
-      console.log(this);
-      this.$emit("cancelForm", "AuthRoleForm", this.myAuthRole);
-    },
-    messageBoxClose() {
-      this.msgBox.dialog = false;
-    },
-  },
-  created() {},
+});
+
+const myAuthRole = reactive({} as AuthRole);
+const readOnly = ref(false);
+let msgBox = {};
+
+let prevAuthRole = commonService.clone(props.authRole) as AuthRole;
+myAuthRole.value = commonService.clone(props.authRole) as AuthRole;
+readOnly.value = props.isReadOnly;
+
+const editForm = () => {
+  readOnly.value = false;
+};
+
+const saveForm = async () => {
+  // console.log( 'form saveForm', this.myCcAccount);
+  let id = myAuthRole.id ? myAuthRole.id : 0;
+  let response = await authService.postAuthRole(id, this.myAuthRole);
+  let bret = commonService.emitSaveForm(this, response);
+  // console.log(bret, response);
+  if (!bret) {
+    msgBox.dialog = true;
+    msgBox.prompt = ["Unable to save Role", ` ${response.rc}] ${response.msg}`];
+  }
+};
+
+const cancelForm = () => {
+  readOnly.value = true;
+  let authRole = commonService.clone(this.prevAuthRole);
+  // this.$emit("cancelForm", "AuthRoleForm", authRole);
+};
+
+const closeForm = () => {
+  console.log(this);
+  // this.$emit("cancelForm", "AuthRoleForm", this.myAuthRole);
+};
+
+const messageBoxClose = () => {
+  msgBox.dialog = false;
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

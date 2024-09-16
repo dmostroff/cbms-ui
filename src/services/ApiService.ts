@@ -11,6 +11,10 @@ import apiStore from '../stores/apiStore'
 //   apiStore().setAxiosError(error)
 // }
 
+const setMessage = (message: string) => {
+  apiStore().setMessage(message)
+}
+
 const setApiError = (error: IApiError | undefined) => {
   apiStore().setApiError(error)
 }
@@ -18,6 +22,8 @@ const setApiError = (error: IApiError | undefined) => {
 const setError = (error: any) => {
   apiStore().setError(error)
 }
+
+const getMessage = (): string => apiStore().Message
 
 const getApiError = (): IApiError => {
   return apiStore().TheApiError
@@ -35,6 +41,7 @@ const apiService = {
   get: async <T>(url: string): Promise<T> => {
     try {
       const response = await api.get(url) as ApiResult
+      setMessage(response.msg)
       console.log( response, typeof response)
       if (response && 'rc' in response && response.rc == 1) {
         return response.data as T
@@ -50,6 +57,7 @@ const apiService = {
   post: async <T>(url: string, body: {}): Promise<T> => {
     try {
       const response = await api.post(url, body) as ApiResult
+      setMessage(response.msg)
       if ( response && 'rc' in response && response.rc == 1) {
         return response.data as T
       } else {
@@ -64,7 +72,8 @@ const apiService = {
   },
   delete: async <T>(url: string): Promise<T> => {
     try {
-      const response = await api.delete(url)
+      const response = await api.delete(url) as ApiResult
+      setMessage(response.msg)
       return response as T
     } catch (error: any) {
       console.error(error)
@@ -75,6 +84,7 @@ const apiService = {
   getAuthTokenName: (): string => api.getAuthorizationTokenName(),
   getAuthToken: (): string => api.getAuthorizationToken(),
   getBaseUrl: (): string => api.baseUrl,
+  getMessage: getMessage,
   getApiError: getApiError,
   getAxiosError: getAxiosError,
   getError: getError,

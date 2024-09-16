@@ -1,5 +1,8 @@
 export class AuthRoleModel {
-  constructor(id, role, description) {
+  id: number
+  role: string
+  description: string
+constructor(id: number, role: string, description: string) {
     this.id = id;
     this.role = role;
     this.description = description;

@@ -1,4 +1,4 @@
-export default interface AdmUser {
+export default interface AuthUser {
   id: number
   username: string
   password: string

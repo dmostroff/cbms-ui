@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('@/views/LoginPage.vue')
     },
     {
+      path: '/logout',
+      name: 'logout',
+      component: () => import('@/views/LoginPage.vue')
+    },
+    {
       path: '/clients',
       name: 'clients',
       component: () => import('@/views/ClientsPage.vue')
@@ -31,6 +36,29 @@ const router = createRouter({
       path: '/sysadmin',
       name: 'sysadmin',
       component: () => import( '@/components/admin/AdminHome.vue')
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import( '@/views/AdminView.vue'),
+      children: [
+        {
+          path: 'roles', // This will render at /user/profile
+          name: 'authroles',
+          component: () => import( '@/components/admin/AuthRoles.vue'),
+        },
+        {
+          path: 'users', // This will render at /user/profile
+          name: 'authusers',
+          component: () => import( '@/components/admin/AuthUsers.vue'),
+        },
+        {
+          path: 'settings', // This will render at /user/settings
+          name: 'admsettings',
+          component: () => import( '@/components/admin/AdmSettings.vue'),
+        }
+      ]      
+
     },
     {
       path: '/network',
