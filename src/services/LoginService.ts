@@ -1,4 +1,4 @@
-import type { LoginInfo, LoginResult } from '@/interfaces/common/LoginInfo'
+import type { LoginInfo, LoginResult, LogoutInfo, LogoutResult } from '@/interfaces/common/LoginInfo'
 // import type UserLoginInfo from '@/interfaces/common/UserLoginInfo'
 import userLoginStore from '@/stores/UserLoginStore'
 import apiService from '@/services/ApiService'
@@ -83,6 +83,10 @@ const storeLoginResult = (loginResult: LoginResult) => {
   myUserLoginStore.setUserLogin(loginResult.user_login)
 }
 
+const userName = (): string | null => {
+  return localStorage.getItem('username')
+}
+
 const login = async (loginInfo: LoginInfo): Promise<LoginResult|ApiResult> => {
   myUserLoginStore = getActivePinia() ? userLoginStore() : defaultUserLoginStore
   // const userLogin = userLoginStore();
@@ -102,9 +106,12 @@ const login = async (loginInfo: LoginInfo): Promise<LoginResult|ApiResult> => {
   }
 }
 
-const logout = async (logoutInfo: LoginInfo): Promise<any> => {
+const logout = async (): Promise<any> => {
   try {
-    const resp = (await apiService.post('onboard/logout', logoutInfo)) as LoginResult
+    const logoutInfo = {
+      username: userName()
+    } as LogoutInfo
+    const resp = (await apiService.postRaw('onboard/logout', logoutInfo)) as LogoutResult
     clearLocalStorage()
     return resp
   } catch (error: any) {
@@ -124,10 +131,6 @@ const isLoggedIn = (): boolean => {
   }
   //console.log( retval, cur_time, exp_date)
   return retval
-}
-
-const userName = (): string | null => {
-  return localStorage.getItem('username')
 }
 
 const clear = () => {

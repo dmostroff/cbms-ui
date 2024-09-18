@@ -43,7 +43,7 @@ const userLoginStore = defineStore('userLoginStore', {
     user: {} as User,
     authToken: null as string | null,
     authTokenName: 'auctoritas',
-    startPage: 'sysadmin',
+    startPage: 'home',
     errorMsg: '' as string,
     userLogin: {} as UserLoginInfo
   }),
@@ -79,6 +79,7 @@ const userLoginStore = defineStore('userLoginStore', {
     },
     setUserLogin(userLogin: UserLoginInfo) {
       this.userLogin = userLogin
+      this.startPage = userLogin.startpage
     },
     clear() {
       this.isLoggedIn = false

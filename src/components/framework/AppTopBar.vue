@@ -20,18 +20,19 @@
           <span class="mx-sm">Logout</span>
           <span class="mx-lg display-3">Welcome {{ username }}</span>
           <span></span>
-          <v-tab :to="{ name: 'login' }">Login</v-tab>
+          <v-tab :to="{ name: 'logout' }">Logout</v-tab>
         </v-btn>
       </div>
       <div v-if="showLogin">
         <v-btn flat dense round icon="login" class="mx-lg align-end" @click="login">
           <span class="mx-sm">Login</span>
+          <v-tab :to="{ name: 'login' }">Login</v-tab>
         </v-btn>
       </div>
       <div><TickingClock /></div>
       <div class="mx-sm">v{{ app_version }}</div>
     </v-toolbar>
-    <v-container>
+    <!-- <v-container>
       <v-row>
         <v-col>Gen: {{ genError }}</v-col>
       </v-row>
@@ -39,7 +40,7 @@
         <v-col>Axios: {{ axiosError }}</v-col>
         <v-col>Api: {{ apiError }}</v-col>
       </v-row>
-    </v-container>
+    </v-container> -->
   </div>
 </template>
 <script setup lang="ts">
@@ -66,31 +67,22 @@ const username = ref(loginService.getUserName());
 const msg = ref("");
 const count = ref(0);
 
-const showLogin = () =>
-  !loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1;
-// computed(
-//   () => !loginService.isLoggedIn && ['login', 'logout'].indexOf(route.name as string) == -1
-// )
+const showLogin = computed(
+  () => {
+    return !loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1;
+  }
+)
+
 const showLogout = computed(
-  () =>
-    loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1
-);
-// watch(
-//   () => route.name,
-//   () => {
-//     routeName.value = 'label' in route.meta ? route.meta.label : route.name
-//   }
-// )
-
-// watch(userLogin, () => {
-//   username.value = loginService.userName
-//   isLoggedIn.value = loginService.isLoggedIn
-// })
+  () => {
+    return loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1;
+  }
+)
 
 
-const genError = computed(() => apiService.getError());
-const apiError = computed(() => apiService.getApiError());
-const axiosError = computed(() => apiService.getAxiosError());
+// const genError = computed(() => apiService.getError());
+// const apiError = computed(() => apiService.getApiError());
+// const axiosError = computed(() => apiService.getAxiosError());
 const isError = computed(() => apiService.getIsError());
 
 const routeName = ref(route.name);
@@ -101,6 +93,7 @@ const login = () => {
 };
 const logout = () => {
   if (route.name != "logout") {
+    loginService.logout()
     router.push({ name: "logout" });
   }
 };

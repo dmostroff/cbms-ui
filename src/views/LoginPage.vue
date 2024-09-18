@@ -86,7 +86,7 @@ import type { Ref } from 'vue'
 import router from "@/router"
 import { useRouter, useRoute } from 'vue-router'
 import admService from '@/services/admService'
-import type { LoginResult } from '@/interfaces/common/LoginInfo'
+import type { LoginResult, LogoutInfo } from '@/interfaces/common/LoginInfo'
 // import ccCardService from '@/service/ccCardService'
 import loginService from '@/services/loginService'
 
@@ -108,10 +108,11 @@ const loginSetup = () => {
   routeName.value = route.name
   if (route.name == 'logout') {
     if (loginService.isLoggedIn()) {
-      loginService.logout(loginInfo)
+      const logoutInfo = { username: loginService.getUserName() } as LogoutInfo
+      loginService.logout(logoutInfo)
       message.value = 'Logged out.'
     } else {
-      loginInfo.username = 'Cheap'
+      loginInfo.username = loginService.getUserName()
       loginService.clear()
       message.value = ''
     }

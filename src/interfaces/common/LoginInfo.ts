@@ -10,3 +10,12 @@ export interface LoginResult {
   user: User
   user_login: UserLoginInfo
 }
+
+export interface LogoutInfo {
+  username: string
+}
+
+export interface LogoutResult {
+  rc: number
+  msg: string
+}

@@ -70,6 +70,22 @@ const apiService = {
       return Promise.reject(new ApiError(error))
     }
   },
+  postRaw: async <T>(url: string, body: {}): Promise<T> => {
+    try {
+      const response = await api.post(url, body) as ApiResult
+      setMessage(response.msg)
+      if ( response && 'rc' in response && response.rc == 1) {
+        return response as T
+      } else {
+        setApiError( response as IApiError | undefined)
+      }
+      return response as T
+    } catch (error: any) {
+      console.error(error)
+      setError( error)
+      return Promise.reject(new ApiError(error))
+    }
+  },
   delete: async <T>(url: string): Promise<T> => {
     try {
       const response = await api.delete(url) as ApiResult
