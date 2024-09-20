@@ -4,23 +4,36 @@ import { ApiResult } from '../interfaces/common/ApiResponse'
 import api from './api'
 // import type ApiResponse from '@/interfaces/ApiResponse'
 import type IApiError from '@/interfaces/api/IApiError'
-import ApiError from '../models/common/ApiError'
-import apiStore from '../stores/apiStore'
+import ApiError from '@/models/common/ApiError'
+import apiStore from '@/stores/apiStore'
 
-// const setAxiosError = (error: typeof AxiosError) => {
-//   apiStore().setAxiosError(error)
-// }
+const setAxiosError = (error: typeof AxiosError) => {
+  apiStore().setAxiosError(error)
+}
+
+const clearAxiosError = () => {
+  return apiStore().clearAxiosError()
+}
 
 const setMessage = (message: string) => {
   apiStore().setMessage(message)
 }
 
 const setApiError = (error: IApiError | undefined) => {
+  console.log(error)
   apiStore().setApiError(error)
+}
+
+const clearApiError = () => {
+  apiStore().clearApiError()
 }
 
 const setError = (error: any) => {
   apiStore().setError(error)
+}
+
+const clearError = () => {
+  apiStore().clearError()
 }
 
 const getMessage = (): string => apiStore().Message
@@ -41,17 +54,21 @@ const apiService = {
   get: async <T>(url: string): Promise<T> => {
     try {
       const response = await api.get(url) as ApiResult
-      setMessage(response.msg)
       console.log( response, typeof response)
-      if (response && 'rc' in response && response.rc == 1) {
-        return response.data as T
+      if (response && 'rc' in response) {
+        setMessage(response.msg)
+        if( response.rc == 1) {
+          return response.data as T
+        } else {
+          setApiError(response as IApiError);
+        }
       } else {
-        throw new ApiError(response)
+        setError(response)
       }
     } catch (error: any) {
       console.error(error)
       setApiError( error)
-      return Promise.reject(new ApiError(error))
+      return Promise.reject(error)
     }
   },
   post: async <T>(url: string, body: {}): Promise<T> => {
@@ -101,9 +118,13 @@ const apiService = {
   getAuthToken: (): string => api.getAuthorizationToken(),
   getBaseUrl: (): string => api.baseUrl,
   getMessage: getMessage,
+  setAxiosError: setAxiosError,
   getApiError: getApiError,
   getAxiosError: getAxiosError,
   getError: getError,
+  clearApiError: clearApiError,
+  clearError: clearError,
+  clearAxiosError: clearAxiosError,
   getIsError: () => apiStore().IsError
   // requestResponse: (response) => {
   //   let retval = { rc: -9, msg: "No response", data: null };

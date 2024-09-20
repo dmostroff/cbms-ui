@@ -25,7 +25,7 @@
       </div>
       <div v-if="showLogin">
         <v-btn flat dense round icon="login" class="mx-lg align-end" @click="login">
-          <span class="mx-sm">Login</span>
+          <!-- <span class="mx-sm">Login</span> -->
           <v-tab :to="{ name: 'login' }">Login</v-tab>
         </v-btn>
       </div>
@@ -45,13 +45,15 @@
 </template>
 <script setup lang="ts">
 /// <reference types="vite/client" />
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
+import { AxiosError } from "axios";
 import apiService from "@/services/apiService";
 // @ts-ignore
 import TickingClock from "@/components/framework/TickingClock.vue";
 import loginService from "@/services/loginService";
+import IApiError from "@/interfaces/api/IApiError";
 
 // const $emits = defineEmits(['toggleLeftDrawer'])
 const router = useRouter();
@@ -110,7 +112,22 @@ const monitorLogin = () => {
 
 msg.value = "Begin";
 const intervalID = monitorLogin();
+const apiError = computed(() => apiService.getApiError());
+const axiosError = computed(() => apiService.getAxiosError())
 
+watch(apiError, (newApiError: IApiError) => {
+      if (newApiError.rc == -8) {
+        apiService.clearApiError()
+        router.push({ name: 'login' });
+      }
+    });
+
+watch(axiosError, (newAxiosError: typeof AxiosError) => {
+  if (newAxiosError.code == "ERR_NETWORK") {
+    // apiService.clearAxiosError()
+    router.push({ name: 'network-error' });
+  }
+});
 </script>
 <script lang="ts">
 

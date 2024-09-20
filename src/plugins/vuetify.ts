@@ -1,26 +1,23 @@
 /**
  * Vuetify3 Plugin
  */
-import { createVuetify, type VuetifyOptions } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-//import * as mdi from 'vuetify/iconsets/mdi'
-import { mdi } from 'vuetify/iconsets/mdi'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import 'vuetify/styles'; // Ensure Vuetify styles are imported
+import { createVuetify, type VuetifyOptions, type ThemeDefinition } from "vuetify";
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import { fa } from "vuetify/iconsets/fa";
+import { aliases, mdi } from "vuetify/lib/iconsets/mdi.mjs";
 
-// import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import * as labsComponents from 'vuetify/labs/components'
+import '@mdi/font/css/materialdesignicons.css'; // Import MDI CSS
+import "@fortawesome/fontawesome-free/css/all.css"
+
+// import { mdi } from "vuetify/iconsets/mdi";
+
 // Translations provided by Vuetify
-import { en } from 'vuetify/locale'
+import { en } from "vuetify/locale";
 
 // Misc
 // import { loadFonts } from '@/plugins/webfontloader'
-
-// Styles
-import 'vuetify/styles'
-// import '@mdi/font/css/materialdesignicons.css'
-
-// await loadFonts()
 
 /**
  * Vuetify Components
@@ -31,20 +28,17 @@ const vuetifyConfig: VuetifyOptions = {
   components,
   directives,
   icons: {
-    defaultSet: 'mdi',
-    aliases: {
-      home: 'mdi-home',
-      cart: 'mdi-cart',
-      user: 'mdi-account'
-    },
+    defaultSet: "mdi", // Specify MDI as the default icon set
+    aliases,
     sets: {
-      mdi
-    }
+      mdi,
+      fa
+    },
   },
   theme: {
-    defaultTheme: 'light'
-  }
-}
+    defaultTheme: "light",
+  },
+};
 // Global configuration
 // https://vuetifyjs.com/en/features/global-configuration/
 /*
@@ -88,9 +82,9 @@ const vuetifyConfig: VuetifyOptions = {
 //   }
 // }
 
-const vuetify = createVuetify(vuetifyConfig)
+const vuetify = createVuetify(vuetifyConfig);
 
-export default vuetify
+export default vuetify;
 
 // Export for test.
-export { components, directives }
+export { components, directives };

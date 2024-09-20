@@ -65,35 +65,41 @@ const apiStore = defineStore("apiStore", {
         this.data = response.data;
       }
     },
+    clearApiError() {
+      this.isError = false;
+      this.apiError = null;
+    },
     clearError() {
       this.isError = false;
+      this.error = null;
     },
     setAxiosError(error: typeof AxiosError | undefined) {
       if( error && this.axiosError) {
-        Object.assign( this.axiosError as typeof AxiosError, error)
+        Object.assign( this.axiosError as typeof AxiosError, error);
       } else {
-        this.axiosError = error
+        this.axiosError = error;
       }
-      console.log( error)
+      // console.log( this.axiosError)
     },
     setApiError(error: IApiError | undefined | null) {
       if( error && this.apiError) {
-        Object.assign( this.apiError as typeof ApiError, error)
+        this.isError = true;
+        Object.assign( this.apiError as IApiError, error);
       } else {
-        this.apiError = error
+        this.apiError = error;
       }
       console.log( error)
     },
     setMessage(message: string) {
-      this.message = message
+      this.message = message;
     },
     setError(error: any) {
       if( error && this.error) {
-        Object.assign( this.error, error)
+        Object.assign( this.error, error);
       } else {
-        this.error = error
+        this.error = error;
       }
-      console.log( error)
+      console.log( error);
     }
     // getError() {
     //   (this.error ? )

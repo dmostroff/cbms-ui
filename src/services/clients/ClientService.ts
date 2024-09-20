@@ -138,6 +138,12 @@ const deleteItem = async (sectionName: string, item_id: number): Promise<ClientD
   return response
 }
 
+const setSection = ( section: string) => {
+  myClientStore.setSection(clients)
+
+}
+
+const getChildRoute
 const clientService = {
   getClients: getClients,
   getClient: getClient,
@@ -155,6 +161,8 @@ const clientService = {
   isLoading: myClientStore.isLoading,
   beginLoading: () => myClientStore.BeginLoading(),
   endLoading: () => myClientStore.EndLoading(),
+  setSection: setSection,
+  getChildRoute: getChildRoute
 }
 
 export default clientService

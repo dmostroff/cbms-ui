@@ -23,3 +23,28 @@ export default interface Client {
 export interface Clients {
   clients: ClientPerson[]
 }
+
+export interface ClientItem {
+  id: number
+  client_code:  string
+  client_info: string
+  client_name: string
+  client_status: string
+  contact_email: string
+  dob: string
+  email: string
+  employer: string | null
+  last_name: string
+  first_name: string
+  middle_name: string | null
+  income: number
+  mmn: string
+  notes: string
+  occupation: string
+  phone: string | null
+  phone_2: string | null
+  pwd: string | null
+  ssn: string | null
+  tax_status: string | null
+  wise: boolean
+}

@@ -17,6 +17,7 @@
         :filter="filter"
         :filter-method="filterChange"
         :header-class="headerrow"
+        @click:row="onRowClick"
         row-key="name"
       >
         <template v-slot:top>
@@ -27,12 +28,12 @@
             <v-input v-model="filter" label="Filter" class="col-4"></v-input>
           </div>
         </template>
-        <template v-slot:body-cell-actions="props">
+        <!-- <template v-slot:body-cell-actions="props">
           <v-td :props="props">
             <v-icon name="edit" @click="editItem(props.row)" class="v-mx-md" />
             <v-icon name="delete" @click="deleteItem(props.row)" class="v-mx-md" />
           </v-td>
-        </template>
+        </template> -->
       </v-data-table>
     </div>
   </div>
@@ -44,6 +45,7 @@ import { useRoute } from 'vue-router'
 import ccd from '@/stores/clientComponentData'
 import clientService from '@/services/clients/ClientService'
 import clientStore from '@/stores/clientStore'
+import Client from '@/interfaces/clients/Client'
 
 const emit = defineEmits(['editItem', 'addItem', 'deleteItem'])
 const myClientStore = clientStore()
@@ -60,6 +62,7 @@ const route = useRoute()
 const routeName = ref(route.name)
 const itemId = ref(0)
 const filter = ref(null)
+const selectedItem = ref({})
 
 const props = defineProps({
   clientSectionName: {
@@ -112,6 +115,11 @@ const editItem = (item) => {
   showDetail.value = true
   showData.value = false
   emit('editItem', item.id)
+}
+
+const onRowClick = ( item ) => {
+  selectedItem.value = item; // Set the clicked item as selected
+  console.log('Clicked item:', item);  
 }
 
 const rowClick = (evnt, item) => {

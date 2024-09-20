@@ -1,26 +1,27 @@
 <template>
   <div>
-    <!-- Search input -->
+    <v-container>
+    <v-icon>mdi-home</v-icon> <!-- Example of using mdi icon -->
+    <v-icon>mdi-account</v-icon>
+  </v-container>    <!-- Search input -->
     <v-text-field v-model="search" label="Search" class="mb-4" outlined></v-text-field>
     <v-data-table
-      item-value="selectedRow"
+      item-value="id"
       :title="title"
       :items="clients"
       :headers="columns"
       separator="vertical"
       :loading="isLoading"
       :search="search"
-      @click:row="rowClick"
+      @click:xxrow="rowClick"
     >
-      <!-- 
-            row-key="" 
-            :filter="filter"
-            :filter-method="filterFunc"
-            -->
       <template v-slot:no-data>
         <v-alert :value="true" color="error" icon="warning">
           Sorry, nothing to display here :(
         </v-alert>
+      </template>
+      <template v-slot:loading>
+        <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
       </template>
       <template v-slot:top>
         <v-row class="justify-start items-center full-width">
@@ -35,7 +36,7 @@
           </v-col>
           <v-col><v-spacer /></v-col>
           <v-col class="col-1" @click="addClient">
-            <v-icon name="add_circle" label="Add" /> Add
+            <v-icon icon="mdi-account-plus" label="Add" /> Add
           </v-col>
           <v-input v-model="filter" label="Filter" class="col-3" clearable></v-input>
           <v-select
@@ -51,40 +52,23 @@
           <!-- :item-value="filterClientStatus" -->
         </v-row>
       </template>
-      <!-- Align ID column data to the left -->
-      <template #item.id="{ item }">
-        <div class="text-start">{{ item.id }}</div>
-      </template>
-      <!-- Client Code -->
-      <template #item.client_code="{ item }">
-        <div class="text-start">{{ item.client_code }}</div>
-      </template>
-      <!-- Last Name -->
-      <template #item.last_name="{ item }">
-        <div class="text-start">{{ item.last_name }}</div>
-      </template>
-      <!-- First Name -->
-      <template #item.first_name="{ item }">
-        <div class="text-start">{{ item.first_name }}</div>
-      </template>
-      <!-- DOB -->
-      <template #item.dob="{ item }">
-        <span>{{ formatDob(item.dob) }}</span>
-      </template>
-      <!-- Email -->
-      <template #item.email="{ item }">
-        <div class="text-start">{{ item.email }}</div>
-      </template>
-      <!-- Align ID column data to the left -->
-      <template #item.client_status="{ item }">
+      <template v-slot:item="{ item }">
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.client_code }}</td>
+        <td>{{ item.last_name }}</td>
+        <td>{{ item.first_name }}</td>
+        <td>{{ formatDob(item.dob) }}</td>
+        <td>{{ item.email }}</td>
+        <td>
         <div class="text-start">{{ formatClientStatus(item.client_status) }}</div>
-      </template>
-      <!-- <template v-slot:body="props">
-              <v-col :props="props">
-                <v-icon name="edit" @click="rowClick(props)" class="mx-md" />
-                <v-icon name="delete" @click="deleteRow(props)" class="mx-md" />
-              </v-col>
-            </template> -->
+      </td>
+        <td>
+          <v-icon class="me-2" size="small" @click="editItem(item)" icon="mdi-pencil"></v-icon>
+          <v-icon size="small" @click="deleteItem(item)" icon="mdi-delete"></v-icon>
+        </td>
+      </tr>
+    </template>      
     </v-data-table>
   </div>
 </template>
@@ -93,6 +77,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import type Client from "@/interfaces/clients/Client";
+import type { ClientItem } from "@/interfaces/clients/Client";
 import ccd from "@/stores/clientComponentData";
 import clientService from "@/services/clients/ClientService";
 import admService from "@/services/admService";
@@ -107,20 +92,19 @@ const upcount = () => counter.value++;
 const isLoading = computed(() => clientService.isLoading);
 const clients = ref([] as Client[]);
 const columns = ccd.clientComponentData.clients.columns;
-console.log(columns);
 const filterClientStatus = ref("ACTIVE");
 let clientStatuses = [] as AdmSetting[];
 const hasLoadedSettings = computed(() => admService.hasLoadedSettings());
 const errorMessage = ref("");
 const selectedRow = ref(0);
+const selectedItem = ref({});
 const title = "Clients";
 
 const getClientList = async () => {
   let response = null;
   try {
-    clients.value = (await clientService.getClients()) as Client[];
+    clients.value = (await clientService.getClients()) as ClientItem[];
     // console.log(clients.value);
-    // console.log(columns);
   } catch (error) {
     console.error(error);
     // errorMessage.value = error
@@ -135,14 +119,20 @@ const getClientStatuses = async () => {
   clientStatuses = admService.getSettingsByPrefix("CLIENTSTATUS");
 };
 
-const rowClick = (item) => {
+const rowClick = (evnt: PointerEvent, rowData: any) => {
+  selectedItem.value = rowData.item;
   clientService.setClientsFilter(filter.value);
-  console.log(item);
+  console.log(evnt, selectedItem.value);
   //   router.push({ name: "client", params: { clientid: item.id } });
 };
 
-const deleteRow = (row) => {
-  clientService.deleteClient(0);
+const editItem = ( item: ClientItem) => {
+  router.push({ name: "client", params: { clientid: item.id } });
+}
+
+const deleteItem = (item: ClientItem) => {
+  console.log("dELETE", row);
+  // clientService.deleteClient(0);
 };
 
 const filterCardStatusChange = (newval: string) => {
@@ -173,9 +163,7 @@ const getData = () => {
   getClientList();
   getClientStatuses();
   clientService.endLoading();
+};
 
-}
-
-getData()
-
+getData();
 </script>

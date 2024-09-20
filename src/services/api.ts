@@ -78,7 +78,7 @@ axiosApi.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (auth_token) {
     config.headers.set('Authorization', `Bearer ${auth_token}`)
     config.headers.set(AUTHORIZATION, auth_token)
-    console.log( config.headers)
+    // console.log( config.headers)
   }
   return config
 })
@@ -123,12 +123,13 @@ const responseBody = (response: AxiosResponse) => response.data
 const httpGet = async (url: string): Promise<ApiResponse<T>> => {
   try {
     const response = await axiosApi.get<ApiResponse<T>>(url).then()
+    console.log(response)
     return response.data
     // if (response.request.status == 200) {
     //   return response.data
     // }
   } catch (error: any) {
-    console.log( error)
+    // console.log( error)
     return axiosErrorHandler(error as typeof AxiosError)
   }
 }

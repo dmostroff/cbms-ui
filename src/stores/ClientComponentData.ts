@@ -48,12 +48,7 @@ const clientComponentData = {
       // { id: 7, value: "gender", key: "gender", title: "Gender" },
       // { id: 8, value: "ssn", key: "ssn", title: "Ssn" },
       // { id: 9, value: "mmn", key: "mmn", title: "Mmn" },
-      { 
-        id: 10,
-        key: 'email', 
-        title: 'Email', 
-        align: 'start'
-      },
+      { id: 10, key: 'email', title: 'Email', align: 'start' },
       // { id: 11, value: "pwd", key: "pwd", title: "Pwd" },
       // { id: 12, value: "phone", key: "phone", title: "Phone" },
       // { id: 13, value: "income", key: "income", title: "Income" },
@@ -69,12 +64,12 @@ const clientComponentData = {
       // },
       // { id: 17, value: "client_info", key: "client_info", title: "Client Info" },
       // { id: 18, value: "recorded_on", key: "recorded_on", title: "Recorded On" },
-      // {
-      //   id: 30,
-      //   key: '_actions_',
-      //   title: 'Actions',
-      //   align: 'center'
-      // }
+      {
+        id: 30,
+        key: '_actions_',
+        title: 'Actions',
+        align: 'center'
+      }
     ],
     getUrl: 'clients',
     postUrl: 'clients/0',
