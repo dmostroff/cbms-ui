@@ -4,6 +4,7 @@ import type { Clients } from '@/interfaces/clients/Client'
 import type ClientPerson from '@/interfaces/clients/ClientPerson'
 import clientStore from '@/stores/ClientStore'
 import type ClientData from '@/interfaces/clients/ClientData'
+import ClientPerson from '../../interfaces/clients/ClientPerson'
 
 // const getClientsIfEmpty = async () => {
 //   if (!clientStore.HasClients()) {
@@ -101,7 +102,7 @@ const getClientPerson = async (client_id: number): Promise<ClientPerson> => {
   const url = sectionUrls.person.getUrl
   const client = (await apiService.get(`${url}/${client_id}`)) as Client
   myClientStore.setClientPerson(client.person)
-  return client.person
+  return client
 }
 
 const postClientPerson = async (clientPerson: ClientPerson): Promise<ClientPerson> => {
@@ -143,7 +144,10 @@ const setSection = ( section: string) => {
 
 }
 
-const getChildRoute
+const getChildRoute = (section: string) => myClientStore.getChildRoute( section)
+
+const ClientPerson = (): ClientPerson => myClientStore.ClientPerson
+
 const clientService = {
   getClients: getClients,
   getClient: getClient,
@@ -162,7 +166,10 @@ const clientService = {
   beginLoading: () => myClientStore.BeginLoading(),
   endLoading: () => myClientStore.EndLoading(),
   setSection: setSection,
-  getChildRoute: getChildRoute
+  getChildRoute: getChildRoute,
+  ClientPerson: ClientPerson,
+  ClientAddresses: () => myClientStore.getSection('address')
+
 }
 
 export default clientService

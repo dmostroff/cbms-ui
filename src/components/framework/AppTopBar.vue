@@ -12,7 +12,7 @@
       <v-divider dark vertical inset />
       <div class="mx-md">{{ app_title }}</div>
       <div class="mx-md">{{ routeName }}</div>
-      <div class="mx-md">{{ msg }}: {{ count }} {{ app_name }}</div>
+      <!-- <div class="mx-md">{{ msg }}: {{ count }} {{ app_name }}</div> -->
       <v-spacer></v-spacer>
       <v-divider inset spaced />
       <div v-if="showLogout">
@@ -69,18 +69,17 @@ const username = ref(loginService.getUserName());
 const msg = ref("");
 const count = ref(0);
 
-const showLogin = computed(
-  () => {
-    return !loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1;
-  }
-)
+const showLogin = computed(() => {
+  return (
+    !loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1
+  );
+});
 
-const showLogout = computed(
-  () => {
-    return loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1;
-  }
-)
-
+const showLogout = computed(() => {
+  return (
+    loginService.isLoggedIn() && ["login", "logout"].indexOf(route.name as string) == -1
+  );
+});
 
 // const genError = computed(() => apiService.getError());
 // const apiError = computed(() => apiService.getApiError());
@@ -95,7 +94,7 @@ const login = () => {
 };
 const logout = () => {
   if (route.name != "logout") {
-    loginService.logout()
+    loginService.logout();
     router.push({ name: "logout" });
   }
 };
@@ -113,22 +112,20 @@ const monitorLogin = () => {
 msg.value = "Begin";
 const intervalID = monitorLogin();
 const apiError = computed(() => apiService.getApiError());
-const axiosError = computed(() => apiService.getAxiosError())
+const axiosError = computed(() => apiService.getAxiosError());
 
 watch(apiError, (newApiError: IApiError) => {
-      if (newApiError.rc == -8) {
-        apiService.clearApiError()
-        router.push({ name: 'login' });
-      }
-    });
+  if (newApiError && newApiError.rc == -8) {
+    apiService.clearApiError();
+    router.push({ name: "login" });
+  }
+});
 
 watch(axiosError, (newAxiosError: typeof AxiosError) => {
-  if (newAxiosError.code == "ERR_NETWORK") {
+  if (newAxiosError && newAxiosError.code == "ERR_NETWORK") {
     // apiService.clearAxiosError()
-    router.push({ name: 'network-error' });
+    router.push({ name: "network-error" });
   }
 });
 </script>
-<script lang="ts">
-
-</script>
+<script lang="ts"></script>

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@mdi/font": "^7.4.47",
     "@vitejs/plugin-vue": "^5.1.2",
     "axios": "^1.7.4",

@@ -30,3 +30,6 @@ const isError = computed(() => {
 
 
 </script>
+export default {
+  name: 'Canvas',
+};

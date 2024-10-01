@@ -33,13 +33,21 @@ const router = createRouter({
       component: () => import("@/views/ClientsPage.vue"),
     },
     {
-      path: "client/:clientid",
+      path: "/client/:client_id",
       name: "client",
       meta: {
         label: "Client",
       },
-      component: () => import("@/components/clients/ClientPersonPage.vue"),
+      component: () => import("@/components/clients/Client.vue"),
       children: [
+        {
+          path: "addresses",
+          name: "address",
+          meta: {
+            label: "Client Addresses",
+          },
+          component: () => import("@/components/clients/list/ClientAddresses.vue"),
+        },
         {
           path: "person",
           name: "person",
@@ -50,7 +58,7 @@ const router = createRouter({
         },
         {
           path: "address/:id",
-          name: "address",
+          name: "addressid",
           meta: {
             label: "Client Address",
           },
@@ -78,7 +86,7 @@ const router = createRouter({
           meta: {
             label: "Credit Report",
           },
-          component: () => import("components/clients/forms/CreditReportForm.vue"),
+          component: () => import("@/components/clients/forms/CreditReportForm.vue"),
         },
         {
           path: "loan/:id",
@@ -86,7 +94,7 @@ const router = createRouter({
           meta: {
             label: "Client Loan",
           },
-          component: () => import("components/clients/forms/LoanForm.vue"),
+          component: () => import("@/components/clients/forms/LoanForm.vue"),
         },
         {
           path: "israelinfo/:id",
@@ -94,7 +102,7 @@ const router = createRouter({
           meta: {
             label: "Client Israel Ifo",
           },
-          component: () => import("components/clients/forms/IsraelForm.vue"),
+          component: () => import("@/components/clients/forms/IsraelForm.vue"),
         },
         {
           path: "creditline/:id",
@@ -102,7 +110,7 @@ const router = createRouter({
           meta: {
             label: "Credit Line History",
           },
-          component: () => import("components/clients/forms/CreditLineHistoryForm.vue"),
+          component: () => import("@/components/clients/forms/CreditLineHistoryForm.vue"),
         },
       ],
     },

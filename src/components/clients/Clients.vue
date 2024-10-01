@@ -16,7 +16,7 @@
       @click:xxrow="rowClick"
     >
       <template v-slot:no-data>
-        <v-alert :value="true" color="error" icon="warning">
+        <v-alert :value="true" color="warning" icon="warning">
           Sorry, nothing to display here :(
         </v-alert>
       </template>
@@ -127,7 +127,8 @@ const rowClick = (evnt: PointerEvent, rowData: any) => {
 };
 
 const editItem = ( item: ClientItem) => {
-  router.push({ name: "client", params: { clientid: item.id } });
+  // console.log("Edit Item", item);
+  router.push({ name: "client", params: { client_id: item.id } });
 }
 
 const deleteItem = (item: ClientItem) => {

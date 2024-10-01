@@ -507,9 +507,9 @@ const clientComponentData = {
 }
 
 const clientLeftNavItems = Object.keys(clientComponentData)
-  .filter((k) => !['clients', 'client'].includes(k))
+  .filter((k) => !['clients', 'client', 'person'].includes(k))
   .map((item: string) => {
-    return { value: item, title: clientComponentData[item]['title'] }
+    return { value: clientComponentData[item].childRoute, title: clientComponentData[item]['title'] }
   })
 
 const getClientComponentData = (section) => {
@@ -526,7 +526,12 @@ const getDeleteUrl = (section) => getSectionMember(section, 'deleteUrl')
 const getTitle = (section) => getSectionMember(section, 'title')
 const getChildRoute = (section) => getSectionMember(section, 'childRoute')
 const getTableColumns = (section) => getSectionMember(section, 'columns')
-
+const getSectionNames = () => {
+  return Object.entries(clientComponentData)
+    .map(item => [{value: item[0], title: item[1].title} ])
+    .filter( item => !['clients', 'client'].includes(item[0].value))
+    .map(k => k[0])
+}
 const ccd = {
   getClientComponentData : getClientComponentData,
   getRouteName : getRouteName,
@@ -536,7 +541,8 @@ const ccd = {
   getChildRoute : getChildRoute,
   getTableColumns : getTableColumns,
   clientComponentData : clientComponentData,
-  clientLeftNavItems : clientLeftNavItems
+  clientLeftNavItems : clientLeftNavItems,
+  getSectionNames: getSectionNames
 }
 
 export default ccd
