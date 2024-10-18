@@ -28,10 +28,10 @@
             <v-text-field
               v-model="loginInfo.username"
               label="User Name"
-              style="background-color: lightgray"
               color="black"
-              background-color="secondary"
-            ></v-text-field>
+            >
+            <template v-slot:append></template>
+            </v-text-field>
           </div>
           <div class="pa-sm">
             <v-text-field
@@ -40,15 +40,19 @@
               :type="isPwd ? 'password' : 'text'"
               hint="Password with toggle"
               @keydown.enter.prevent="login"
-              style="background-color: gray"
               color="secondary"
             >
               <template v-slot:append>
                 <v-icon
-                  :name="isPwd ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
+                  v-if="isPwd"
+                  icon="mdi-eye"
                   @click="isPwd = !isPwd"
-                />
+                ></v-icon>
+                <v-icon
+                  v-else
+                  icon="mdi-eye-off"
+                  @click="isPwd = !isPwd"
+                ></v-icon>
               </template>
             </v-text-field>
           </div>

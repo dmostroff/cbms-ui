@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-toolbar class="bg-secondary text-white shadow-2">
+    <v-app-bar class="bg-secondary text-white shadow-2">
       <v-btn
         flat
         dense
         round
-        icon="menu"
+        icon="mdi-menu"
         aria-label="Menu"
-        @click="$emit('toggleLeftDrawer')"
+        @click="toggleLeftDrawer"
       />
       <v-divider dark vertical inset />
       <div class="mx-md">{{ app_title }}</div>
@@ -31,7 +31,7 @@
       </div>
       <div><TickingClock /></div>
       <div class="mx-sm">v{{ app_version }}</div>
-    </v-toolbar>
+    </v-app-bar>
     <!-- <v-container>
       <v-row>
         <v-col>Gen: {{ genError }}</v-col>
@@ -55,7 +55,7 @@ import TickingClock from "@/components/framework/TickingClock.vue";
 import loginService from "@/services/loginService";
 import IApiError from "@/interfaces/api/IApiError";
 
-// const $emits = defineEmits(['toggleLeftDrawer'])
+const emits = defineEmits(['toggleLeftDrawer'])
 const router = useRouter();
 const route = useRoute();
 
@@ -63,6 +63,7 @@ const app_title = import.meta.env.VITE_APP_TITLE;
 const app_version = import.meta.env.VITE_APP_VERSION;
 const app_name = import.meta.env.MYNAME;
 const username = ref(loginService.getUserName());
+const toggleLeftDrawer = () => { emits("toggleLeftDrawer")}
 // const userLogin = loginService.userLogin
 // const isLoggedIn = ref(loginService.isLoggedIn)
 // const username = ref(loginService.userName)

@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <v-app>
     <header>
-      <AppTopBar></AppTopBar>
+      <AppTopBar @toggleLeftDrawer="handleToggleLeftNav"></AppTopBar>
     </header>
+    <LeftNav :show="showLeftNav" @leftnavclick="handleLeftNavClick"></LeftNav>
     <RouterView />
     <footer><AppFooter/></footer>
-  </div>
+  </v-app>
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue'
@@ -15,7 +16,9 @@ import apiService from '@/services/apiService';
 import AppTopBar from '@/components/framework/AppTopBar.vue'
 // @ts-ignore
 import AppFooter from '@/components/framework/AppFooter.vue'
+import LeftNav from './LeftNav.vue';
 
+const showLeftNav = ref(false)
 
 const isError = computed(() => {
   let retval = false
@@ -28,7 +31,13 @@ const isError = computed(() => {
   return retval
 })
 
+const handleToggleLeftNav = () => {
+  showLeftNav.value = !showLeftNav.value
+}
 
+const handleLeftNavClick = (leftNavItem: string) => {
+  router.push( { name: leftNavItem })
+}
 </script>
 export default {
   name: 'Canvas',

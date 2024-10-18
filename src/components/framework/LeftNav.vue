@@ -1,60 +1,60 @@
 <template>
-  <q-list bordered separator>
-    <q-item-label header>Select a Category</q-item-label>
-    <q-item clickable v-for="(item, idx) in navLinks" :key="idx">
-      <!-- v-bind="item.link" -->
-      <q-item-section v-if="item.icon" avatar>
-        <q-icon :name="item.icon" />
-      </q-item-section>
-
-      <q-item-section>
-        <router-link
-          :to="{ name: item.link }"
-          active-class="primary"
-          @click="$emit('leftnavclick', item.link)"
+  <div>
+    <v-navigation-drawer v-model="props.show" app>
+      <v-list>
+        <v-list-item
+          clickable
+          v-for="(item, idx) in navLinks"
+          :key="idx"
+          @click="emit('leftnavclick', item.link)"
         >
-          <q-item-label>{{ item.title }}</q-item-label>
-          <q-item-label caption>{{ item.caption }}</q-item-label>
-        </router-link>
-      </q-item-section>
-    </q-item>
-  </q-list>
+          <v-icon v-if="item.icon" :icon="item.icon" />
+          <span>{{ item.title }}</span>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    {{ props.show }}
+  </div>
 </template>
 <script setup>
-import { watch, computed } from 'vue'
-import { userLoginStore } from '@/stores/userLoginStore'
-const emits = defineEmits(['leftnavclick'])
-const userLogin = userLoginStore()
-let isLoggedIn = userLogin.IsLoggedIn
+import { watch, computed, defineProps } from "vue";
+import userLoginStore from "@/stores/userLoginStore";
+const emits = defineEmits(["leftnavclick"]);
+const userLogin = userLoginStore();
+let isLoggedIn = userLogin.IsLoggedIn;
+
+const props = defineProps({
+  show: Boolean,
+});
 
 watch(userLogin, () => {
-  isLoggedIn = userLogin.IsLoggedIn
-})
+  isLoggedIn = userLogin.IsLoggedIn;
+});
 
 const navLinks = [
   {
-    title: 'Clients',
-    link: 'clients',
-    caption: 'List of all clients'
+    title: "Clients",
+    link: "clients",
+    caption: "List of all clients",
   },
   {
-    title: 'Cards',
-    link: 'cards',
-    caption: 'Cc Cards'
+    title: "Cards",
+    link: "cards",
+    caption: "Cc Cards",
   },
   {
-    title: 'Credit Summary',
-    link: 'creditsummary',
-    caption: 'List of Credit Summaries'
+    title: "Credit Summary",
+    link: "creditsummary",
+    caption: "List of Credit Summaries",
   },
   {
-    title: 'Admin',
-    link: 'admin',
-    caption: 'Administration'
+    title: "Admin",
+    link: "admin",
+    caption: "Administration",
   },
   {
-    title: isLoggedIn ? 'Logout' : 'Login',
-    link: isLoggedIn ? 'logout' : 'login'
-  }
-]
+    title: isLoggedIn ? "Logout" : "Login",
+    link: isLoggedIn ? "logout" : "login",
+  },
+];
 </script>
