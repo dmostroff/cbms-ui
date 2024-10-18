@@ -1,32 +1,22 @@
 <template>
-  <div>
-    <v-navigation-drawer v-model="props.show" app>
-      <v-list>
-        <v-list-item
-          clickable
-          v-for="(item, idx) in navLinks"
-          :key="idx"
-          @click="emit('leftnavclick', item.link)"
-        >
-          <v-icon v-if="item.icon" :icon="item.icon" />
-          <span>{{ item.title }}</span>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    {{ props.show }}
-  </div>
+  <v-list>
+    <v-list-item
+      clickable
+      v-for="(item, idx) in navLinks"
+      :key="idx"
+      @click="emits('leftNavClick', item.link)"
+    >
+      <v-icon v-if="item.icon" :icon="item.icon" />
+      <span>{{ item.title }}</span>
+    </v-list-item>
+  </v-list>
 </template>
 <script setup>
-import { watch, computed, defineProps } from "vue";
+import { watch, computed } from "vue";
 import userLoginStore from "@/stores/userLoginStore";
-const emits = defineEmits(["leftnavclick"]);
 const userLogin = userLoginStore();
 let isLoggedIn = userLogin.IsLoggedIn;
-
-const props = defineProps({
-  show: Boolean,
-});
-
+const emits = defineEmits(['leftNavClick'])
 watch(userLogin, () => {
   isLoggedIn = userLogin.IsLoggedIn;
 });

@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <v-app-bar class="bg-secondary text-white shadow-2">
+  <v-container>
+    <v-row>
+      <v-col cols="1">
       <v-btn
         flat
         dense
@@ -9,9 +10,13 @@
         aria-label="Menu"
         @click="toggleLeftDrawer"
       />
+    </v-col>
+    <v-col cols="2">
       <v-divider dark vertical inset />
       <div class="mx-md">{{ app_title }}</div>
       <div class="mx-md">{{ routeName }}</div>
+    </v-col>
+    <v-col cols="2">
       <!-- <div class="mx-md">{{ msg }}: {{ count }} {{ app_name }}</div> -->
       <v-spacer></v-spacer>
       <v-divider inset spaced />
@@ -29,9 +34,14 @@
           <v-tab :to="{ name: 'login' }">Login</v-tab>
         </v-btn>
       </div>
+    </v-col>
+    <v-col cols="3">
       <div><TickingClock /></div>
+    </v-col>
+    <v-col cols="2">
       <div class="mx-sm">v{{ app_version }}</div>
-    </v-app-bar>
+      </v-col>
+    </v-row>
     <!-- <v-container>
       <v-row>
         <v-col>Gen: {{ genError }}</v-col>
@@ -41,7 +51,7 @@
         <v-col>Api: {{ apiError }}</v-col>
       </v-row>
     </v-container> -->
-  </div>
+  </v-container>
 </template>
 <script setup lang="ts">
 /// <reference types="vite/client" />
