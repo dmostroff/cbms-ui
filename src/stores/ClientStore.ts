@@ -167,8 +167,13 @@ const clientStore = defineStore('clientStore', {
     },
     deleteClient(id: number) {
       return id
+    },
+    getSection(state: StateTree): any[] {
+      return typeof state.client == 'object' && sectionNames.includes(state.sectionName)
+        ? state.client[state.sectionName]
+        : []
     }
-
+    
     // async savePerson(clientPerson: ClientPersonModel) {
     //   const clientPersonData = clientPerson.to_data();
     //   console.log(clientPersonData);

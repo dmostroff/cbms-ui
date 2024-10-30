@@ -60,10 +60,10 @@ export const getDate = (date: string | null, pattern: string = 'M/d/yyyy') => {
   }
 }
 
-export const getAge = (date: string) => {
+export const getAge = (date: string, format="MM/dd/yyyy") => {
   let retval = 0
   try {
-    const dt: Date = datefns.parse(date, 'MM/dd/yyyy', 1)
+    const dt: Date = datefns.parse(date, format, 1)
     retval = datefns.isValid(dt) ? datefns.differenceInYears(datefns.endOfToday(), dt) : 0
     console.log('getAge', retval)
   } catch (error) {

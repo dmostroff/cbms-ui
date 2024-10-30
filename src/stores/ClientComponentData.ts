@@ -89,7 +89,7 @@ const clientComponentData = {
     childRoute: 'person'
   },
   address: {
-    title: 'Client Address',
+    title: 'Address',
     columns: [
       { id: 1, value: 'id', key: 'id', title: 'Id', classes: 'id-column' },
       // { id: 2, value: 'client_code', key: 'client_code'.  title: 'Client Code' },
@@ -409,7 +409,7 @@ const clientComponentData = {
     childRoute: 'creditreport'
   },
   client_israel: {
-    title: 'Client Israel Information',
+    title: 'Israel Info',
     columns: [
       {
         id: 1,
@@ -529,7 +529,7 @@ const getTableColumns = (section) => getSectionMember(section, 'columns')
 const getSectionNames = () => {
   return Object.entries(clientComponentData)
     .map(item => [{value: item[0], title: item[1].title} ])
-    .filter( item => !['clients', 'client'].includes(item[0].value))
+    .filter( item => !['clients', 'client', 'person'].includes(item[0].value))
     .map(k => k[0])
 }
 const ccd = {

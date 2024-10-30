@@ -5,6 +5,8 @@ import type ClientPerson from '@/interfaces/clients/ClientPerson'
 import clientStore from '@/stores/ClientStore'
 import type ClientData from '@/interfaces/clients/ClientData'
 import ClientPerson from '../../interfaces/clients/ClientPerson'
+import ClientCreditLineHistories from '../../components/clients/list/ClientCreditLineHistories.vue'
+import ClientCreditReports from '../../components/clients/list/ClientCreditReports.vue'
 
 // const getClientsIfEmpty = async () => {
 //   if (!clientStore.HasClients()) {
@@ -82,6 +84,7 @@ const getClient = async (client_id: number): Promise<Client> => {
   const url = sectionUrls.client.getUrl
   const client = (await apiService.get(`${url}/${client_id}`)) as Client
   myClientStore.setClient(client)
+  console.log("clientService getClient", myClientStore.Client.address, "respect")
   return client
 }
 
@@ -146,8 +149,6 @@ const setSection = ( section: string) => {
 
 const getChildRoute = (section: string) => myClientStore.getChildRoute( section)
 
-const ClientPerson = (): ClientPerson => myClientStore.ClientPerson
-
 const clientService = {
   getClients: getClients,
   getClient: getClient,
@@ -167,9 +168,15 @@ const clientService = {
   endLoading: () => myClientStore.EndLoading(),
   setSection: setSection,
   getChildRoute: getChildRoute,
-  ClientPerson: ClientPerson,
-  ClientAddresses: () => myClientStore.getSection('address')
-
+  ClientPerson: () => myClientStore.ClientPerson,
+  ClientAddresses: () => myClientStore.Client.address,
+  ClientCcAccounts: () => myClientStore.Client.cc_account,
+  ClientCheckings: () => myClientStore.Client.checking,
+  ClientIsraels: () => myClientStore.Client.client_israel,
+  ClientCreditLineHistories: () => myClientStore.Client.credit_line_history,
+  ClientCreditReports: () => myClientStore.Client.credit_report,
+  ClientCreditSummary: () => myClientStore.Client.credit_summary,
+  ClientLoans: () => myClientStore.Client.loan,
 }
 
 export default clientService

@@ -1,5 +1,4 @@
 <template>
-  <!-- <q-btn color="primary" label="Client Data" dense size="sm" class="dense"> -->
   <div ref="leftNav">
     <q-menu auto-close>
       <q-list hightlight separator class="text-white text-caption">

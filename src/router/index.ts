@@ -49,6 +49,62 @@ const router = createRouter({
           component: () => import("@/components/clients/list/ClientAddresses.vue"),
         },
         {
+          path: "ccaccounts",
+          name: "cc_account",
+          meta: {
+            label: "Client Accounts",
+          },
+          component: () => import("@/components/clients/list/ClientCcAccounts.vue"),
+        },
+        {
+          path: "checkings",
+          name: "checking",
+          meta: {
+            label: "Client Checking",
+          },
+          component: () => import("@/components/clients/list/ClientCheckings.vue"),
+        },
+        {
+          path: "israel",
+          name: "client_israel",
+          meta: {
+            label: "Client Israel",
+          },
+          component: () => import("@/components/clients/list/ClientIsraels.vue"),
+        },
+        {
+          path: "credit_line_history",
+          name: "credit_line_history",
+          meta: {
+            label: "Client Line History",
+          },
+          component: () => import("@/components/clients/list/ClientCreditLineHistories.vue"),
+        },
+        {
+          path: "credit_report",
+          name: "credit_report",
+          meta: {
+            label: "Client Credit Report",
+          },
+          component: () => import("@/components/clients/list/ClientCreditReports.vue"),
+        },
+        {
+          path: "loans",
+          name: "loan",
+          meta: {
+            label: "Client Loans",
+          },
+          component: () => import("@/components/clients/list/ClientLoans.vue"),
+        },
+        {
+          path: "credit_summary",
+          name: "credit_summary",
+          meta: {
+            label: "Client Credit Summary",
+          },
+          component: () => import("@/components/clients/ClientCreditSummary.vue"),
+        },
+        {
           path: "person",
           name: "person",
           meta: {
@@ -74,7 +130,7 @@ const router = createRouter({
         },
         {
           path: "checking/:id",
-          name: "checking",
+          name: "checkingid",
           meta: {
             label: "Client Checking",
           },
@@ -82,7 +138,7 @@ const router = createRouter({
         },
         {
           path: "creditreport/:id",
-          name: "creditreport",
+          name: "creditreportid",
           meta: {
             label: "Credit Report",
           },
@@ -90,7 +146,7 @@ const router = createRouter({
         },
         {
           path: "loan/:id",
-          name: "loan",
+          name: "loanid",
           meta: {
             label: "Client Loan",
           },
@@ -98,7 +154,7 @@ const router = createRouter({
         },
         {
           path: "israelinfo/:id",
-          name: "israelinfo",
+          name: "israelinfoid",
           meta: {
             label: "Client Israel Ifo",
           },
@@ -106,7 +162,7 @@ const router = createRouter({
         },
         {
           path: "creditline/:id",
-          name: "creditline",
+          name: "creditlineid",
           meta: {
             label: "Credit Line History",
           },

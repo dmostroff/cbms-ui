@@ -288,7 +288,7 @@
 </template>
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
-import { useCurrencyInput } from "vue-currency-input";
+// import { useCurrencyInput } from "vue-currency-input";
 import { admStore } from "@/stores/admStore";
 import { clientStore } from "@/stores/clientStore";
 import commonService, {
@@ -300,9 +300,9 @@ import commonService, {
 } from "@/services/commonService";
 import ccd from "@/stores/clientComponentData";
 import EditSaveCancel from "src/components/common/EditSaveCancel.vue";
-import QCurrencyInput from "src/components/common/CurrencyInput.vue";
+import QCurrencyInput from "@/components/common/CurrencyInput.vue";
 // import MessageBox from "src/components/common/MessageBox.vue";
-import { msgBoxModel } from "src/models/common/msgBoxModel";
+import { msgBoxModel } from "@/models/common/msgBoxModel";
 import { ClientPersonModel } from "src/models/clients/ClientPersonModel";
 
 const myClientStore = clientStore();
@@ -317,7 +317,8 @@ const isPwd = ref(true);
 const title = ccd.getTitle("person");
 const msgBoxConfirm = reactive(new msgBoxModel());
 const isValid = computed(() => clientPerson.value.isValid());
-const formattedIncome = ref(useCurrencyInput(clientPerson.value.income));
+// const formattedIncome = ref(useCurrencyInput(clientPerson.value.income));
+const formattedIncome = ref(clientPerson.value.income);
 const version = "1.2";
 const dateOptions = [
   {
