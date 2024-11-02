@@ -1,12 +1,8 @@
 import apiService from '@/services/apiService'
 import type Client from '@/interfaces/clients/Client'
-import type { Clients } from '@/interfaces/clients/Client'
 import type ClientPerson from '@/interfaces/clients/ClientPerson'
 import clientStore from '@/stores/ClientStore'
 import type ClientData from '@/interfaces/clients/ClientData'
-import ClientPerson from '../../interfaces/clients/ClientPerson'
-import ClientCreditLineHistories from '../../components/clients/list/ClientCreditLineHistories.vue'
-import ClientCreditReports from '../../components/clients/list/ClientCreditReports.vue'
 
 // const getClientsIfEmpty = async () => {
 //   if (!clientStore.HasClients()) {
@@ -81,10 +77,11 @@ const getClients = async (): Promise<Client[]> => {
 }
 
 const getClient = async (client_id: number): Promise<Client> => {
-  const url = sectionUrls.client.getUrl
-  const client = (await apiService.get(`${url}/${client_id}`)) as Client
+  // const url = 
+  const full_url = `${sectionUrls.client.getUrl}/${client_id}`
+  const client = (await apiService.get(full_url)) as Client
   myClientStore.setClient(client)
-  console.log("clientService getClient", myClientStore.Client.address, "respect")
+  console.log("clientService getClient", myClientStore.Client.address, full_url)
   return client
 }
 
@@ -142,10 +139,15 @@ const deleteItem = async (sectionName: string, item_id: number): Promise<ClientD
   return response
 }
 
-const setSection = ( section: string) => {
-  myClientStore.setSection(clients)
-
+const getSectionItem = (sectionData: Array<ClientData>, item_id: number): ClientData => {
+  try {
+    const retVal = sectionData.filter((item: ClientData) => item.id == item_id)
+    return (retVal.length == 0) ? { id: -2 } : retVal[0]
+  } catch( error) {
+    return { id: -1 } as ClientData
+  }
 }
+
 
 const getChildRoute = (section: string) => myClientStore.getChildRoute( section)
 
@@ -166,8 +168,8 @@ const clientService = {
   isLoading: myClientStore.isLoading,
   beginLoading: () => myClientStore.BeginLoading(),
   endLoading: () => myClientStore.EndLoading(),
-  setSection: setSection,
   getChildRoute: getChildRoute,
+  Client: () => myClientStore.Client,
   ClientPerson: () => myClientStore.ClientPerson,
   ClientAddresses: () => myClientStore.Client.address,
   ClientCcAccounts: () => myClientStore.Client.cc_account,
@@ -177,6 +179,13 @@ const clientService = {
   ClientCreditReports: () => myClientStore.Client.credit_report,
   ClientCreditSummary: () => myClientStore.Client.credit_summary,
   ClientLoans: () => myClientStore.Client.loan,
+  getAddress: (id: number) => getSectionItem(myClientStore.Client.address, id),
+  getCcAccount: (id: number) => getSectionItem( myClientStore.Client.cc_account, id),
+  getChecking: (id: number) => getSectionItem(myClientStore.Client.checking, id),
+  getIsraelInfo: (id: number) => getSectionItem(myClientStore.Client.client_israel, id),
+  getCreditLineHistory: (id: number) => getSectionItem(myClientStore.Client.credit_line_history, id),
+  getCreditReport: (id: number) => getSectionItem(myClientStore.Client.credit_report, id),
+  getLoan: (id: number) => getSectionItem(myClientStore.Client.loan, id),
 }
 
 export default clientService

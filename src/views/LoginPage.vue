@@ -14,7 +14,7 @@
       <v-row class="justify-center items-center">
         <v-col cols="5">Is Logged In: {{ isLoggedIn }}</v-col>
         <v-col cols="2">
-          <v-img src="~/assets/creditcard.png" class="mx-2" style="width: 60%"></v-img>
+          <v-img src="@/assets/creditcard.png" class="mx-2" style="width: 60%"></v-img>
         </v-col>
         <v-col><v-spacer /></v-col>
       </v-row>
@@ -167,5 +167,6 @@ const ping = async () => {
 }
 
 loginSetup()
+console.log( "LoginPage")
 
 </script>

@@ -9,7 +9,7 @@ import clientService from "@/services/clients/ClientService";
 const title = ccd.clientComponentData.address.title
 const headers=ccd.clientComponentData.address.columns
 const items = clientService.ClientAddresses()
-// console.log( "clientAddresses", items)
+console.log( "clientAddresses", items)
 </script>
 
 <style>

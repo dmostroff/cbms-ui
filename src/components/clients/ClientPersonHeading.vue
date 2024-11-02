@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="!isValid">
+      Invalid
+    </div>
     <v-container v-if="isValid">
       <v-row class="text-h5">
         <v-col cols="2">&nbsp;</v-col>
@@ -113,30 +116,27 @@ import type Client from "@/interfaces/clients/Client";
 import type ClientPerson from "@/interfaces/clients/ClientPerson";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const route = useRoute();
-const client = ref({} as Client);
-const clientPerson = ref({} as ClientPerson);
-
-const getClient = async (id: number) => {
-  client.value = await clientService.getClient(id);
-  clientPerson.value = client.value.person;
-  console.log(clientPerson);
-};
+const client = ref(clientService.Client());
+const clientPerson = ref(clientService.ClientPerson())
+const client_id = parseInt(route.params.client_id as string);
+console.log("ClientPersonHeading", client.value)
+console.log("clientPerson", clientPerson);
 
 const isValid = computed(() => {
-  return true;
+  return (clientPerson.value) ? true : false;
   // return clientPerson; // && 'id' in clientPerson
 });
 
 const clientAge = computed(() => {
-  console.log("DOB", typeof(clientPerson.value.dob))
-  return clientPerson.value && "dob" in clientPerson.value
-    ? getAge(clientPerson.value.dob, "yyyy-MM-dd")
+  if (clientPerson === undefined) {
+    return null
+  }
+  console.log("DOB", typeof(clientPerson.dob))
+  return clientPerson && "dob" in clientPerson
+    ? getAge(clientPerson.dob, "yyyy-MM-dd")
     : null;
 });
 
-const client_id = parseInt(route.params.client_id as string);
-getClient(client_id);
-console.log(clientPerson.value);
 </script>
 
 <style></style>

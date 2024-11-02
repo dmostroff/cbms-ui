@@ -151,7 +151,6 @@ const formatDob = (dt: string): string => {
 };
 
 const formatClientStatus = (client_status: string): string => {
-  console.log(client_status);
   return admService.getKeyValue(client_status, clientStatuses);
 };
 

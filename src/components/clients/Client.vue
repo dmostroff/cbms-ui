@@ -3,7 +3,7 @@
   <div v-for="item in sectionNames" style="display:inline">
         <v-tab :key="item.value" @click="clickSection(item.value)">{{ item.title }}
           </v-tab></div>
-          <ClientPersonHeading />
+          <ClientPersonHeading :key="currentSectionName"/>
     <v-divider></v-divider>
     <RouterView />
   </div>
@@ -31,7 +31,7 @@
     </div> -->
 </template>
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router"
 import clientService from "@/services/clients/ClientService";
@@ -48,12 +48,13 @@ import ccd from "@/stores/clientComponentData";
 const route = useRoute();
 const client = ref({} as Client);
 const clientId = ref(0)
+const currentSectionName = ref('')
 
 const getClient = async (id: number) => {
   client.value = await clientService.getClient(id);
   console.log( "getClient", client.value)
   clientId.value = client.value.person.id
-  
+  console.log( "Vommon drnmdr", clientService.Client())
 };
 
 const getSections = () => {
@@ -63,8 +64,10 @@ const getSections = () => {
 };
 
 const clickSection = ( sectionName: string) => {
+  currentSectionName.value = sectionName
   router.push( { name: sectionName, params: { client_id: clientId.value}})
 }
+
 const sectionNames = getSections();
 const isValid = computed(() => {
   return true;
@@ -72,5 +75,8 @@ const isValid = computed(() => {
 });
 
 const client_id = parseInt(route.params.client_id as string);
+
 getClient(client_id);
+// go to the cc accounts section first
+//clickSection('cc_account');
 </script>

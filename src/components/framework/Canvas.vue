@@ -46,5 +46,7 @@ const handleLeftNavClick = (leftNavItem: string) => {
   showLeftNav.value = false;
   router.push({ name: leftNavItem });
 };
+
+console.log("Canvas");
 </script>
 export default { name: 'Canvas', };
