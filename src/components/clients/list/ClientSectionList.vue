@@ -42,7 +42,9 @@
 </template>
 
 <script setup lang="ts">
+import ClientData from "@/interfaces/clients/ClientData";
 import { ref } from "vue";
+const emits = defineEmits(['editItem', 'deleteItem'])
 const props = defineProps({
   title: { type: String, default: "Client" },
   headers: { tytpe: Object, default: {} },
@@ -57,13 +59,14 @@ const viewDetails = (item) => {
   alert(item);
 };
 
-const editItem = (item) => {
+const editItem = (item: ClientData) => {
   console.log(item);
-  alert("edit "+item.id);
+  emits("editItem", item)
 };
 const deleteItem = (item) => {
   console.log(item);
   alert("delete "+item.id);
+  emits("deleteItem", item)
 };
 </script>
 
