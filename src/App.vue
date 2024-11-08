@@ -5,7 +5,7 @@
     <v-navigation-drawer v-model="showLeftNav" app>
       <LeftNav :show="showLeftNav" @leftNavClick="handleLeftNavClick"></LeftNav>
     </v-navigation-drawer>
-    <v-app-bar class="bg-secondary text-white shadow-2">
+    <v-app-bar class="bg-secondary text-white shadow-2 ma-1" height="100">
       <!-- <header> -->
       <AppTopBar @toggleLeftDrawer="handleToggleLeftNav"></AppTopBar>
     </v-app-bar>

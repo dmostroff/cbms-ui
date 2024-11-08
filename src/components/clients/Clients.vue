@@ -73,7 +73,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import type Client from "@/interfaces/clients/Client";
@@ -87,7 +87,7 @@ import AdmSetting from "@/interfaces/admin/AdmSetting";
 const router = useRouter();
 const counter = ref(0);
 const filter = ref(clientService.getClientsFilter());
-const search = ref("");
+const search = ref(clientService.getSearchValue());
 const upcount = () => counter.value++;
 const isLoading = computed(() => clientService.isLoading);
 const clients = ref([] as Client[]);
@@ -154,6 +154,12 @@ const formatClientStatus = (client_status: string): string => {
   return admService.getKeyValue(client_status, clientStatuses);
 };
 
+watch(
+  search,
+  (newValue: string, oldValue: string) => {
+    clientService.setSearchValue( newValue);
+  }
+);
 const addClient = (row: Client) => {
   alert(row);
 };

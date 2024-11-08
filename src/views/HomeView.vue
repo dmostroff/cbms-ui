@@ -6,7 +6,7 @@ const router = useRouter()
 // import router from '@/router'
 const app_version = import.meta.env.VITE_APP_VERSION
 const app_title = import.meta.env.VITE_APP_TITLE
-router.push({ name: 'login' })
+// router.push({ name: 'login' })
 </script>
 
 <template>

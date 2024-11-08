@@ -28,7 +28,8 @@ const clientStore = defineStore('clientStore', {
     loading: false,
     error: null as string | null,
     item: {} as Record<string, any>,
-    itemIsValid: null as boolean | null
+    itemIsValid: null as boolean | null,
+    searchValue: '' as string,
   }),
   getters: {
     IsLoading: ( state: StateTree) => state.loading,
@@ -68,10 +69,12 @@ const clientStore = defineStore('clientStore', {
       return state.sectionName in state.sectionFilter ? state.sectionFilter[state.sectionName] : ''
     },
     SectionTitle: (state: StateTree) => state.sectionTitle,
-    Filters: (state: StateTree) =>
-      Object.entries(state.sectionFilter)
+    Filters: (state: StateTree) => {
+      return Object.entries(state.sectionFilter)
         .map(([k, v]) => k + ':' + v)
         .join('~')
+    },
+    SearchValue: (state: StateTree) => state.searchValue
   },
   actions: {
     BeginLoading() {
@@ -172,6 +175,9 @@ const clientStore = defineStore('clientStore', {
       return typeof state.client == 'object' && sectionNames.includes(state.sectionName)
         ? state.client[state.sectionName]
         : []
+    },
+    setSearchValue( search: string) {
+      this.searchValue = search;
     }
     
     // async savePerson(clientPerson: ClientPersonModel) {

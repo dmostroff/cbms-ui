@@ -33,6 +33,7 @@
               :items="states"
               item-text="label"
               item-value="value"
+              single-lin
             />
           </v-col>
           <v-col cols="1">
@@ -57,6 +58,8 @@
         </v-row>
       </v-container>
     </v-form>
+    <div>{{ states }}</div>
+    <div style="border: 1 solid blue">{{ currentState }}</div>
   </v-card>
 </template>
 
@@ -75,7 +78,7 @@ const myClientAddress = reactive(props.clientAddress);
 const addressValid = ref(true)
 const isValid = () => { true }
 const isReadOnly = ref(false);
-const states = ref(statesDropDown);
+const states = statesDropDown;
 const currentState = statesDropDown.filter( (item) => { item.value == myClientAddress.state })[0]
 const stateRules = [(v: string) => (v && v.length <= 2) || "Max 2 characters"];
 

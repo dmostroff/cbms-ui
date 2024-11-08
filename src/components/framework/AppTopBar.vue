@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="1">
+    <v-row class>
+      <v-col cols="1">{{ isLoggedIn }}
       <v-btn
         flat
         dense
@@ -75,7 +75,7 @@ const app_name = import.meta.env.MYNAME;
 const username = ref(loginService.getUserName());
 const toggleLeftDrawer = () => { emits("toggleLeftDrawer")}
 // const userLogin = loginService.userLogin
-// const isLoggedIn = ref(loginService.isLoggedIn)
+ const isLoggedIn = ref(loginService.isLoggedIn())
 // const username = ref(loginService.userName)
 const msg = ref("");
 const count = ref(0);

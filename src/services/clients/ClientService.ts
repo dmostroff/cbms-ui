@@ -186,6 +186,8 @@ const clientService = {
   getCreditLineHistory: (id: number) => getSectionItem(myClientStore.Client.credit_line_history, id),
   getCreditReport: (id: number) => getSectionItem(myClientStore.Client.credit_report, id),
   getLoan: (id: number) => getSectionItem(myClientStore.Client.loan, id),
+  getSearchValue: () => myClientStore.SearchValue,
+  setSearchValue: (search: string) => myClientStore.setSearchValue( search),
 }
 
 export default clientService

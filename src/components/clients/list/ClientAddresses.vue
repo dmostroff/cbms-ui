@@ -8,7 +8,7 @@
     <address-form :clientAddress="clientAddress"/>
         <v-btn
           text="Close Dialog"
-          @click="isActive.value = false"
+          @click="closeDialog"
         ></v-btn>
   </template>
 </v-dialog>
@@ -36,6 +36,10 @@ const editItem = ( item: ClientData) => {
 const deleteItem = ( item: ClientData) => {
   alert("Delete?!")
   isActive.value = true
+}
+
+const closeDialog = () => {
+  isActive.value = false
 }
 </script>
 

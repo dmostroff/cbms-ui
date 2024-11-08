@@ -3,7 +3,7 @@
   <div v-for="item in sectionNames" style="display:inline">
         <v-tab :key="item.value" @click="clickSection(item.value)">{{ item.title }}
           </v-tab></div>
-          <ClientPersonHeading :key="currentSectionName"/>
+          <ClientPersonHeading :key="clientId"/>
     <v-divider></v-divider>
     <RouterView />
   </div>
@@ -55,6 +55,7 @@ const getClient = async (id: number) => {
   console.log( "getClient", client.value)
   clientId.value = client.value.person.id
   console.log( "Vommon drnmdr", clientService.Client())
+
 };
 
 const getSections = () => {
@@ -77,6 +78,7 @@ const isValid = computed(() => {
 const client_id = parseInt(route.params.client_id as string);
 
 getClient(client_id);
+currentSectionName.value = "cc_account"
 // go to the cc accounts section first
-//clickSection('cc_account');
+clickSection(currentSectionName.value);
 </script>

@@ -50,8 +50,8 @@ const progMode = import.meta.env.MODE;
 const copyright = "\u00A9 Ostroff Enterprises " + new Date().getFullYear();
 const items = frameworkService.menuItem;
 
-const clickitem = (name: string) => {
-  router.push({ name: name });
+const clickitem = (route_name: string) => {
+  router.push({ name: route_name });
 };
 
 const showDebug = ref(false);
