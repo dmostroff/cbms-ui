@@ -3,7 +3,7 @@
     <v-container>
     <v-icon>mdi-home</v-icon> <!-- Example of using mdi icon -->
     <v-icon>mdi-account</v-icon>
-  </v-container>    <!-- Search input -->
+  </v-container v-if="isValid">    <!-- Search input -->
     <v-text-field v-model="search" label="Search" class="mb-4" outlined></v-text-field>
     <v-data-table
       item-value="id"
@@ -81,6 +81,7 @@ import type { ClientItem } from "@/interfaces/clients/Client";
 import ccd from "@/stores/clientComponentData";
 import clientService from "@/services/clients/ClientService";
 import admService from "@/services/admService";
+import apiService from "@/services/apiService";
 import { filterTableRows, formatDate } from "@/services/commonService";
 import AdmSetting from "@/interfaces/admin/AdmSetting";
 
@@ -99,16 +100,25 @@ const errorMessage = ref("");
 const selectedRow = ref(0);
 const selectedItem = ref({});
 const title = "Clients";
+const isValid = ref( false)
+
 
 const getClientList = async () => {
   let response = null;
+  isValid.value = false
   try {
     clients.value = (await clientService.getClients()) as ClientItem[];
+    isValid.value = true
     // console.log(clients.value);
   } catch (error) {
-    console.error(error);
+    console.error("Clients Error", error);
     // errorMessage.value = error
     // setTimeout(() => goLogin(), 1000)
+  }
+  const apiError = apiService.getApiError()
+  console.log( "isError", apiError)
+  if( apiError && 'msg' in apiError && apiError.msg == 'No token') {
+    router.push( { name: 'login'} )
   }
 };
 
@@ -127,12 +137,12 @@ const rowClick = (evnt: PointerEvent, rowData: any) => {
 };
 
 const editItem = ( item: ClientItem) => {
-  // console.log("Edit Item", item);
+  console.log("Edit Item", item.id);
   router.push({ name: "client", params: { client_id: item.id } });
 }
 
 const deleteItem = (item: ClientItem) => {
-  console.log("dELETE", row);
+  console.log("Delete", item);
   // clientService.deleteClient(0);
 };
 

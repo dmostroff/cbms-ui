@@ -24,16 +24,18 @@
         </v-row>
         <v-row no-gutters>
           <v-col cols="4">
-            <v-text-field v-model="myClientAddress.city" label="City" :readonly="isReadOnly" />
+            <v-text-field
+              v-model="myClientAddress.city"
+              label="City"
+              :readonly="isReadOnly"
+            />
           </v-col>
           <v-col cols="2">
             <v-select
-              v-model="currentState"
+              v-model="myClientAddress.state"
               label="State"
               :items="states"
-              item-text="label"
-              item-value="value"
-              single-lin
+              single-line
             />
           </v-col>
           <v-col cols="1">
@@ -58,8 +60,6 @@
         </v-row>
       </v-container>
     </v-form>
-    <div>{{ states }}</div>
-    <div style="border: 1 solid blue">{{ currentState }}</div>
   </v-card>
 </template>
 
@@ -75,11 +75,12 @@ import commonService from "@/services/commonService";
 const route = useRoute();
 const props = defineProps(["clientAddress"]);
 const myClientAddress = reactive(props.clientAddress);
-const addressValid = ref(true)
-const isValid = () => { true }
+const addressValid = ref(true);
+const isValid = () => {
+  true;
+};
 const isReadOnly = ref(false);
-const states = statesDropDown;
-const currentState = statesDropDown.filter( (item) => { item.value == myClientAddress.state })[0]
+const states = statesDropDown.map((item) => item.value);
 const stateRules = [(v: string) => (v && v.length <= 2) || "Max 2 characters"];
 
 // const setClientAddress = () => {

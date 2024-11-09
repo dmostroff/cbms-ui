@@ -1,5 +1,7 @@
 <template>
-    <client-section-list :title="title" :headers="headers" :items="items"/>
+    <div v-if="items">
+        <client-section-list :title="title" :headers="headers" :items="items"/>
+    </div>
 </template>
 
 <script setup lang="ts">

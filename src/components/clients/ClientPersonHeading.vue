@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>!{{ props.client_id }}
     <div v-if="!isValid">
       Invalid
     </div>
@@ -102,8 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import { useRoute } from "vue-router";
+import { ref, watch, computed, defineProps } from "vue";
 import clientService from "@/services/clients/ClientService";
 import {
   getAge,
@@ -115,12 +114,26 @@ import {
 import type Client from "@/interfaces/clients/Client";
 import type ClientPerson from "@/interfaces/clients/ClientPerson";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-const route = useRoute();
+
 const client = ref(clientService.Client());
 const clientPerson = ref(clientService.ClientPerson())
-const client_id = parseInt(route.params.client_id as string);
-console.log("ClientPersonHeading", client.value)
-console.log("clientPerson", clientPerson);
+
+const props = defineProps([ 'client_id'])
+const getClientPerson = async () => {
+  clientPerson.value = await clientService.getClientPerson( props.client_id)
+}
+getClientPerson()
+// alert(props.client_id)
+// watch(
+//   props.client_id,
+//   (newValue: string, oldValue: string) => {
+//     alert( newValue, oldValue);
+//     client.value = clientService.Client();
+//     clientPerson.value = clientService.ClientPerson();
+//   }
+// );
+// console.log("ClientPersonHeading", client.value)
+console.log("clientPerson", clientPerson.value);
 
 const isValid = computed(() => {
   return (clientPerson.value) ? true : false;
@@ -131,9 +144,9 @@ const clientAge = computed(() => {
   if (clientPerson === undefined) {
     return null
   }
-  console.log("DOB", typeof(clientPerson.dob))
-  return clientPerson && "dob" in clientPerson
-    ? getAge(clientPerson.dob, "yyyy-MM-dd")
+  console.log("DOB", typeof(clientPerson.value.dob))
+  return clientPerson.value && "dob" in clientPerson.value
+    ? getAge(clientPerson.value.dob, "yyyy-MM-dd")
     : null;
 });
 

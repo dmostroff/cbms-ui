@@ -1,9 +1,9 @@
 <template>
-  <div>
-  <div v-for="item in sectionNames" style="display:inline">
-        <v-tab :key="item.value" @click="clickSection(item.value)">{{ item.title }}
-          </v-tab></div>
-          <ClientPersonHeading :key="clientId"/>
+  <div v-if="clientId>0">
+    <div v-for="item in sectionNames" style="display: inline">
+      <v-tab :key="item.value" @click="clickSection(item.value)">{{ item.title }} </v-tab>
+    </div>
+    <ClientPersonHeading :key="clientId" :client_id="clientId"/>
     <v-divider></v-divider>
     <RouterView />
   </div>
@@ -19,7 +19,7 @@
     <v-divider></v-divider>
     <RouterView />
   </v-container> -->
-    <!-- Frank{{ sectionNames }}!
+  <!-- Frank{{ sectionNames }}!
     <div>
       <v-select
         :items="sectionNames"
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import router from "@/router"
+import router from "@/router";
 import clientService from "@/services/clients/ClientService";
 import {
   getAge,
@@ -47,27 +47,28 @@ import ClientPersonHeading from "@/components/clients/ClientPersonHeading.vue";
 import ccd from "@/stores/clientComponentData";
 const route = useRoute();
 const client = ref({} as Client);
-const clientId = ref(0)
-const currentSectionName = ref('')
+const clientId = ref(0);
+const currentSectionName = ref("");
 
 const getClient = async (id: number) => {
   client.value = await clientService.getClient(id);
-  console.log( "getClient", client.value)
-  clientId.value = client.value.person.id
-  console.log( "Vommon drnmdr", clientService.Client())
-
+  console.log("getClient", client.value);
+  // if ( client.value.person && 'id' in client.value.person) {
+  //   clientId.value = client.value.person.id
+  // }
 };
 
 const getSections = () => {
   const sections = ccd.getSectionNames();
   // sections.forEach( (item)=> item.value = `${client.value.person.id}/${item.value}` )
-  return sections
+  return sections;
 };
 
-const clickSection = ( sectionName: string) => {
-  currentSectionName.value = sectionName
-  router.push( { name: sectionName, params: { client_id: clientId.value}})
-}
+const clickSection = (sectionName: string) => {
+  currentSectionName.value = sectionName;
+  console.log(sectionName, clientId.value);
+  router.push({ name: sectionName, params: { client_id: clientId.value } });
+};
 
 const sectionNames = getSections();
 const isValid = computed(() => {
@@ -75,10 +76,11 @@ const isValid = computed(() => {
   // return clientPerson; // && 'id' in clientPerson
 });
 
-const client_id = parseInt(route.params.client_id as string);
+clientId.value = parseInt(route.params.client_id as string);
+console.log("Client: client_id", clientId.value);
 
-getClient(client_id);
-currentSectionName.value = "cc_account"
+getClient(clientId.value);
+currentSectionName.value = "cc_account";
 // go to the cc accounts section first
 clickSection(currentSectionName.value);
 </script>

@@ -88,7 +88,7 @@ const apiStore = defineStore("apiStore", {
       } else {
         this.apiError = error;
       }
-      console.log( error)
+      console.log( error, this.isError)
     },
     setMessage(message: string) {
       this.message = message;

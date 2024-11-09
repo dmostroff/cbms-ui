@@ -84,6 +84,15 @@ const mapSettingsToOptions = (settings: AdmSetting[], prefix: string) => {
     : []
 }
 
+const getSettingsByPrefix = ( prefix: string, admSetting: any, admSettings: Array<any>) => {
+    if( !admSetting) {
+      return admSetting
+    }
+    return admSettings.length > 0
+      ? admSettings.filter((item: AdmSetting) => item.prefix === prefix)
+      : admSettings
+}
+
 const admStore = defineStore('admStore', {
   state: () => ({
     hasLoadedSettings: false,
@@ -132,13 +141,22 @@ const admStore = defineStore('admStore', {
     Settings: (state) => state.admSettings,
     SettingsByPrefix: (state) => {
       return (prefix: string) => {
-        if( !state.admSetting) {
-          return state.admSetting
+        let retval = undefined
+        try {
+          retval = getSettingsByPrefix( prefix, state.admSetting, state.admSettings)
+        } catch( error) {
+          retval = error
         }
-        return state.admSettings.length > 0
-          ? state.admSettings.filter((item: AdmSetting) => item.prefix === prefix)
-          : state.admSettings
+        return retval
       }
+      // return (prefix: string) => {
+      //   if( !state.admSetting) {
+      //     return state.admSetting
+      //   }
+      //   return state.admSettings.length > 0
+      //     ? state.admSettings.filter((item: AdmSetting) => item.prefix === prefix)
+      //     : state.admSettings
+      // }
     },
     PrefixOptions: (state) => {
       return mapSettingsToOptions(state.admSettings, '__prefix__')

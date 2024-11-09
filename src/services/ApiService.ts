@@ -20,7 +20,7 @@ const setMessage = (message: string) => {
 }
 
 const setApiError = (error: IApiError | undefined) => {
-  console.log(error)
+  console.log("setApiError", error)
   apiStore().setApiError(error)
 }
 
@@ -78,6 +78,7 @@ const apiService = {
       if ( response && 'rc' in response && response.rc == 1) {
         return response.data as T
       } else {
+        console.log( 'setApiError', response)
         setApiError( response as IApiError | undefined)
       }
       return response as T
